@@ -1,26 +1,123 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react"
+import { Routes, Route, Navigate } from "react-router-dom"
+import Layout from "./components/Layout/Layout"
+import Home from "./components/Pages/Home"
+import Page1 from "./components/Pages/Page1"
+import ReservationPage from "./components/Pages/ReservationPage"
+import AdminPanel from "./components/Pages/AdminPanel"
+import { AuthProvider } from "./context/AuthContext"
+import { useAuth } from "./context/AuthContext"
+import { UserProvider } from "./context/UserContext"
+import UserList from "./components/CRUD/UserList"
+import UserForm from "./components/CRUD/UserForm"
+import UserDetails from "./components/CRUD/UserDetails"
+// Импорт провайдера контекста авторизации и хука для доступа к контексту.
+import LoginPage from "./components/Pages/LoginPage"
+import RegisterPage from "./components/Pages/RegisterPage"
+import { LocalizationProvider } from '@mui/x-date-pickers'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import RoomTypeList from "./components/CRUD/RoomTypeList"
+import RoomTypeForm from "./components/CRUD/RoomTypeForm"
+import { RoomTypeProvider } from "./context/RoomTypeContext"
+import RoomTypeDetails from "./components/CRUD/RoomTypeDetails"
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const ProtectedRoute: React.FC<{ children: React.ReactElement; adminOnly?: boolean }> = ({
+  children,
+  adminOnly = false,
+}) => {
+  // Этот компонент используется для защиты маршрутов.
+  // Он проверяет, авторизован ли пользователь, и есть ли у него права администратора.
+
+  const { user, isAdmin } = useAuth()
+  // Хук из контекста авторизации, чтобы получить данные о текущем пользователе и его правах.
+
+  if (!user) {
+    alert("Недостаточно прав. Выполните вход!")
+    // Если пользователь не авторизован, показываем уведомление.
+    return <Navigate to="/" replace />
+    // Перенаправляем на главную страницу.
+  } else if (adminOnly && !isAdmin) {
+    alert("Недостаточно прав пользователя!")
+    // Если маршрут только для администраторов, а пользователь не администратор, показываем уведомление.
+    return <Navigate to="/" replace />
+    // Перенаправляем на главную страницу.
+  }
+
+  return children
+  // Если все проверки пройдены, рендерим вложенные компоненты.
 }
 
-export default App;
+const App: React.FC = () => {
+  // Главный компонент приложения, который объединяет маршруты, Layout и провайдер авторизации.
+
+  return (
+    <AuthProvider>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+      {/* Обеспечиваем доступ к контексту авторизации для всех компонентов приложения. */}
+      <Layout>
+        {/* Оборачиваем приложение в Layout, который может содержать шапку, подвал и т.д. */}
+        <Routes>
+          {/* Определяем маршруты приложения. */}
+          <Route path="/" element={<Home />} />
+          {/* Маршрут главной страницы. */}
+          <Route path="/login" element={<LoginPage />} />
+          {/* Маршрут страницы входа. */}
+          <Route path="/register" element={<RegisterPage />} />
+          {/* Маршрут страницы регистрации. */}
+          <Route path="/page1" element={<Page1 />} />
+          {/* Маршрут для Page1 без ограничений. */}
+
+          <Route
+            path="/page2"
+            element={
+              <ProtectedRoute>
+                {/* Ограниченный маршрут для Page2. */}
+                <ReservationPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/adminPanel"
+            element={
+              <ProtectedRoute adminOnly>
+                {/* Ограниченный маршрут для панели администратора только для администраторов. */}
+                <AdminPanel />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/users/*"
+            element={
+              <ProtectedRoute adminOnly>
+                <UserProvider>
+                  <Routes>
+                    <Route path="" element={<UserList />} />
+                    <Route path="add" element={<UserForm />} />
+                    <Route path=":id" element={<UserDetails />} />
+                  </Routes>
+                </UserProvider>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/roomTypes/*"
+            element={
+              <ProtectedRoute adminOnly>
+                <RoomTypeProvider>
+                  <Routes>
+                    <Route path="" element={<RoomTypeList />} />
+                    <Route path="add" element={<RoomTypeForm />} />
+                    <Route path=":id" element={<RoomTypeDetails />} />
+                  </Routes>
+                </RoomTypeProvider>
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </Layout>
+      </LocalizationProvider>
+    </AuthProvider>
+  )
+}
+
+export default App
