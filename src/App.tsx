@@ -24,6 +24,10 @@ import { RoomProvider } from "./context/RoomContext"
 import RoomList from "./components/CRUD/RoomList"
 import RoomForm from "./components/CRUD/RoomForm"
 import RoomDetails from "./components/CRUD/RoomDetails"
+import { AdditionalServiceProvider } from "./context/AdditionalServiceContext"
+import AdditionalServiceList from "./components/CRUD/AdditionalServiceList"
+import AdditionalServiceForm from "./components/CRUD/AdditionalServiceForm"
+import AdditionalServiceDetails from "./components/CRUD/AdditionalServiceDetails"
 
 const ProtectedRoute: React.FC<{ children: React.ReactElement; adminOnly?: boolean }> = ({
   children,
@@ -128,6 +132,20 @@ const App: React.FC = () => {
                     <Route path=":id" element={<RoomDetails />} />
                   </Routes>
                 </RoomProvider>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/services/*"
+            element={
+              <ProtectedRoute adminOnly>
+                <AdditionalServiceProvider>
+                  <Routes>
+                    <Route path="" element={<AdditionalServiceList />} />
+                    <Route path="add" element={<AdditionalServiceForm />} />
+                    <Route path=":id" element={<AdditionalServiceDetails />} />
+                  </Routes>
+                </AdditionalServiceProvider>
               </ProtectedRoute>
             }
           />
