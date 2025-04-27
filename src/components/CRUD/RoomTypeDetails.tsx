@@ -40,13 +40,14 @@ const RoomTypeDetails: React.FC = () => {
               Детали типа комнаты
             </Typography>
             <Typography><strong>Вместительность:</strong> {type.guestCapacity}</Typography>
+            <Typography><strong>Категория:</strong> {type.roomCategory.category}</Typography>
             <Typography><strong>Цена за сутки:</strong> {type.price}</Typography>
             <Typography><strong>Описание:</strong> {type.description}</Typography>
             <Box mt={2}>
             <Typography variant="h6">Комнаты этого типа:</Typography>
             {relatedRooms.length > 0 ? (
               relatedRooms.map(room => (
-                <Typography key={room.id}>Номер комнаты: {room.number}</Typography>
+                <Typography key={room.id}>Номер {room.number}</Typography>
               ))
             ) : (
               <Typography>Нет комнат этого типа</Typography>

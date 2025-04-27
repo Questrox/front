@@ -12,6 +12,9 @@ const AdminPanel = () => {
   const handleGoToRoomTypesManagement = () => {
     navigate("/roomTypes")
   }
+  const handleGoToRoomManagement = () => {
+    navigate("/rooms")
+  }
 
   return (
     <div>
@@ -36,6 +39,14 @@ const AdminPanel = () => {
         sx={{ display: 'block', mt: 2 }}
       >
         Перейти к управлению типами комнат
+      </Button>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleGoToRoomManagement}
+        sx={{ display: 'block', mt: 2 }}
+      >
+        Перейти к управлению комнатами
       </Button>
     </div>
   )

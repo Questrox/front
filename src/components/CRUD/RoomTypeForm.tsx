@@ -71,7 +71,7 @@ const RoomTypeForm: React.FC<RoomTypeFormProps> = ({ existingType }) => {
         }
         navigate("/roomTypes")
         } catch (error) {
-        alert("Ошибка при сохранении пользователя.")
+        alert("Ошибка при сохранении типа комнаты.")
         }
     }
       return (
