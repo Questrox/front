@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, ReactNode } from "react"
-import APIService from "../services/APIService"
+import UserService from "../services/UserService"
 import { User } from "../models/user"
 
 // Интерфейс для контекста пользователя
@@ -23,26 +23,26 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   // Получение пользователей от API
   const fetchUsers = async () => {
-    const data = await APIService.getUsers()
+    const data = await UserService.getUsers()
     setUsers(data || [])
   }
 
   // Добавление нового пользователя
   const addUser = async (user: Omit<User, "id">) => {
-    const newUser = await APIService.createUser(user)
+    const newUser = await UserService.createUser(user)
     setUsers([...users, newUser]) // Обновляем состояние
   }
 
   // Обновление пользователя
   const updateUser = async (updatedUser: User) => {
-    const newUser = await APIService.updateUser(updatedUser);
+    const newUser = await UserService.updateUser(updatedUser);
     setUsers(users.map((u) => (u.id === newUser.id ? newUser : u))); // Обновляем список
   };
 
   // Удаление пользователя
   const deleteUser = async (id: string) => {
     try {
-      await APIService.deleteUser(id);
+      await UserService.deleteUser(id);
       // Обновляем список пользователей
       setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id)); 
     } catch (error: unknown) { 

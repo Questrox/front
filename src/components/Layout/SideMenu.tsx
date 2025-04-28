@@ -1,7 +1,7 @@
 import React from "react"
 import { Drawer, List, ListItemButton, ListItemIcon, ListItemText } from "@mui/material"
 // Импорт компонентов Material UI для создания бокового меню.
-import { Home, Settings, Info, Mail } from "@mui/icons-material"
+import { Home, Settings, Info, Mail, AccountBox } from "@mui/icons-material"
 // Импорт иконок из Material UI для отображения в меню.
 import { useLocation } from "react-router-dom"
 
@@ -14,7 +14,7 @@ const MENU_ITEMS = [
   // Массив с настройками пунктов меню: текст, иконка и путь.
   { text: "Домашняя", icon: <Home />, path: "/" },
   { text: "Наши номера", icon: <Mail />, path: "/page1" },
-  { text: "Забронировать номер", icon: <Info />, path: "/page2" },
+  { text: "Личный кабинет", icon: <AccountBox />, path: "/userProfile" },
   { text: "Панель администратора", icon: <Settings />, path: "/adminPanel" },
 ]
 

@@ -1,7 +1,7 @@
 import { User } from "../models/user"
 
 // Класс для работы с API
-class APIService {
+class UserService {
   private baseUrl: string
 
   constructor(baseUrl: string) {
@@ -66,4 +66,4 @@ class APIService {
 
 }
 
-export default new APIService("/api") // Экспортируем инстанс с базовым URL
+export default new UserService("/api") // Экспортируем инстанс с базовым URL

@@ -28,6 +28,8 @@ import { AdditionalServiceProvider } from "./context/AdditionalServiceContext"
 import AdditionalServiceList from "./components/CRUD/AdditionalServiceList"
 import AdditionalServiceForm from "./components/CRUD/AdditionalServiceForm"
 import AdditionalServiceDetails from "./components/CRUD/AdditionalServiceDetails"
+import { UserProfileProvider } from "./context/UserProfileContext"
+import UserProfile from "./components/Pages/UserProfile"
 
 const ProtectedRoute: React.FC<{ children: React.ReactElement; adminOnly?: boolean }> = ({
   children,
@@ -90,6 +92,20 @@ const App: React.FC = () => {
               <ProtectedRoute adminOnly>
                 {/* Ограниченный маршрут для панели администратора только для администраторов. */}
                 <AdminPanel />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/userProfile/*"
+            element={
+              <ProtectedRoute>
+                <UserProfileProvider>
+                  <Routes>
+                    <Route path="" element={<UserProfile />} />
+                    <Route path="booking" element={<ReservationPage />} />
+                    <Route path=":id" element={<UserDetails />} />
+                  </Routes>
+                </UserProfileProvider>
               </ProtectedRoute>
             }
           />
