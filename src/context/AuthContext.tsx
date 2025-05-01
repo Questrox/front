@@ -14,6 +14,8 @@ interface AuthContextType {
 
   isAdmin: boolean
   // Флаг, указывающий, является ли пользователь администратором.
+
+  isLoading: boolean //Чтобы при перезагрузке не выводилось всегда сообщение о том, что нужно сделать вход
 }
 
 enum UserRole {
@@ -30,6 +32,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<LoginResponse | null>(null)
   // Локальное состояние для хранения информации о текущем пользователе.
 
+  const [isLoading, setIsLoading] = useState(true)
+
+
   useEffect(() => {
     // При первой загрузке проверяем, есть ли сохраненный токен.
     const token = authService.getToken()
@@ -38,6 +43,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Если есть токен, пробуем загрузить информацию о пользователе из локального хранилища.
       if (storedUser) setUser(JSON.parse(storedUser))
     }
+    setIsLoading(false)
   }, [])
   // Пустой массив зависимостей (`[]`) означает, что этот эффект выполнится только один раз — при монтировании компонента.
 
@@ -73,7 +79,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Проверяем, является ли пользователь администратором (определяется по полю `userRole`).
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, isAdmin }}>
+    <AuthContext.Provider value={{ user, login, logout, isAdmin, isLoading }}>
       {/* Передаем данные о пользователе и методы авторизации в контекст. */}
       {children}
     </AuthContext.Provider>

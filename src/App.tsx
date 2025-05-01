@@ -3,7 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom"
 import Layout from "./components/Layout/Layout"
 import Home from "./components/Pages/Home"
 import Page1 from "./components/Pages/Page1"
-import ReservationPage from "./components/Pages/ReservationPage"
+import ReservationPage from "./components/Pages/CreateReservationPage"
 import AdminPanel from "./components/Pages/AdminPanel"
 import { AuthProvider } from "./context/AuthContext"
 import { useAuth } from "./context/AuthContext"
@@ -30,6 +30,12 @@ import AdditionalServiceForm from "./components/CRUD/AdditionalServiceForm"
 import AdditionalServiceDetails from "./components/CRUD/AdditionalServiceDetails"
 import { UserProfileProvider } from "./context/UserProfileContext"
 import UserProfile from "./components/Pages/UserProfile"
+import dayjs from "dayjs"
+import "dayjs/locale/ru";
+import { CreateReservationProvider } from "./context/CreateReservationContext"
+import { CircularProgress } from "@mui/material"
+
+dayjs.locale("ru");
 
 const ProtectedRoute: React.FC<{ children: React.ReactElement; adminOnly?: boolean }> = ({
   children,
@@ -38,8 +44,12 @@ const ProtectedRoute: React.FC<{ children: React.ReactElement; adminOnly?: boole
   // Этот компонент используется для защиты маршрутов.
   // Он проверяет, авторизован ли пользователь, и есть ли у него права администратора.
 
-  const { user, isAdmin } = useAuth()
+  const { user, isAdmin, isLoading } = useAuth()
   // Хук из контекста авторизации, чтобы получить данные о текущем пользователе и его правах.
+
+  if (isLoading) {
+    return <CircularProgress/>
+  }
 
   if (!user) {
     alert("Недостаточно прав. Выполните вход!")
@@ -62,7 +72,7 @@ const App: React.FC = () => {
 
   return (
     <AuthProvider>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ru">
       {/* Обеспечиваем доступ к контексту авторизации для всех компонентов приложения. */}
       <Layout>
         {/* Оборачиваем приложение в Layout, который может содержать шапку, подвал и т.д. */}
@@ -76,16 +86,6 @@ const App: React.FC = () => {
           {/* Маршрут страницы регистрации. */}
           <Route path="/page1" element={<Page1 />} />
           {/* Маршрут для Page1 без ограничений. */}
-
-          <Route
-            path="/page2"
-            element={
-              <ProtectedRoute>
-                {/* Ограниченный маршрут для Page2. */}
-                <ReservationPage />
-              </ProtectedRoute>
-            }
-          />
           <Route
             path="/adminPanel"
             element={
@@ -99,6 +99,7 @@ const App: React.FC = () => {
             path="/userProfile/*"
             element={
               <ProtectedRoute>
+                <CreateReservationProvider>
                 <UserProfileProvider>
                   <Routes>
                     <Route path="" element={<UserProfile />} />
@@ -106,6 +107,7 @@ const App: React.FC = () => {
                     <Route path=":id" element={<UserDetails />} />
                   </Routes>
                 </UserProfileProvider>
+                </CreateReservationProvider>
               </ProtectedRoute>
             }
           />

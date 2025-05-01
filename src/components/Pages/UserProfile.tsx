@@ -76,7 +76,7 @@ const UserProfile: React.FC = () => {
                   <Typography>
                     <strong>Даты:</strong> {formatDate(res.arrivalDate)} - {formatDate(res.departureDate)}
                   </Typography>
-                  <Typography>
+                  <Typography component="div">
                     <strong>Статус:</strong>{" "}
                     <Chip
                         label={res.reservationStatus.status}
@@ -96,7 +96,13 @@ const UserProfile: React.FC = () => {
 
                   </Typography>
                   <Typography>
-                    <strong>Стоимость:</strong> {res.fullPrice} ₽
+                    <strong>Стоимость проживания:</strong> {res.livingPrice} ₽
+                  </Typography>
+                  <Typography>
+                    <strong>Стоимость дополнительных услуг:</strong> {res.servicesPrice} ₽
+                  </Typography>
+                  <Typography>
+                    <strong>Итого:</strong> {res.fullPrice} ₽
                   </Typography>
                 </Stack>
               </CardContent>

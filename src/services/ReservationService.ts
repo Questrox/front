@@ -1,4 +1,5 @@
-import { Reservation } from "../models/reservation"
+import { Reservation, ReservationToCreate } from "../models/reservation"
+import { SelectedService, ServiceString } from "../models/serviceString"
 
 class ReservationService {
   private baseUrl: string
@@ -22,8 +23,9 @@ class ReservationService {
   }
 
   // Создание нового бронирования
-  async createReservation(res: Omit<Reservation, "id">): Promise<Reservation> {
-    
+  async createReservation(res: ReservationToCreate): Promise<Reservation> {
+    console.log("Отправляемое тело:", JSON.stringify(res, null, 2))
+
     const response = await fetch(`${this.baseUrl}/Reservation`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -70,6 +72,37 @@ class ReservationService {
       throw new Error(`Failed to delete reservation: ${response.status} - ${errorText}`)
     }
   }
+
+  async calculatePrice(
+    arrivalDate: string,
+    departureDate: string,
+    roomTypeID: number,
+    services: SelectedService[]
+  ): Promise<number> {
+    const response = await fetch("/api/Reservation/calculatePrice", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        arrivalDate,
+        departureDate,
+        roomTypeID,
+        services: services.map(s => ({
+          Count: s.count,
+          AdditionalServiceID: s.additionalServiceID,
+          Price: s.price,
+        })),
+      }),
+    })
+
+    if (!response.ok) {
+      throw new Error(`Ошибка при расчете стоимости: ${response.status}`)
+    }
+    const totalPrice = await response.json() as number
+    return totalPrice
+  }
+
 }
 
 export default new ReservationService("/api")

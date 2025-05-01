@@ -63,6 +63,29 @@ class RoomService {
       throw new Error(`Failed to delete room: ${response.status} - ${errorText}`)
     }
   }
+
+// Получение списка доступных комнат
+async getAvailableRooms(arrivalDate: string, departureDate: string, roomTypeID: number): Promise<Room[]> {
+  const url = `${this.baseUrl}/Room/available`
+    + `?arrivalDate=${encodeURIComponent(arrivalDate)}`
+    + `&departureDate=${encodeURIComponent(departureDate)}`
+    + `&roomTypeID=${roomTypeID}`
+
+  const response = await fetch(url, {
+    method: "GET",
+  })
+
+  if (!response.ok) {
+    const errorText = await response.text()
+    console.error(
+      `Ошибка при получении доступных комнат: ${response.status} - ${errorText}`
+    )
+    throw new Error(`Failed to fetch available rooms: ${response.status} - ${errorText}`)
+  }
+
+  return await response.json()
+}
+
 }
 
 export default new RoomService("/api")
