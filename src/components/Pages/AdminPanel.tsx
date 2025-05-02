@@ -19,6 +19,10 @@ const AdminPanel = () => {
     navigate("/services")
   }
 
+  const handleGoToReservations = () => {
+    navigate("/adminReservations")
+  }
+
 
   return (
     <div>
@@ -59,6 +63,14 @@ const AdminPanel = () => {
         sx={{ display: 'block', mt: 2 }}
       >
         Перейти к управлению доп. услугами
+      </Button>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleGoToReservations}
+        sx={{ display: 'block', mt: 2 }}
+      >
+        Перейти к управлению бронированиями
       </Button>
     </div>
   )

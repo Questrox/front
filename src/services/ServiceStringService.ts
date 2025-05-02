@@ -7,14 +7,33 @@ class ServiceStringService {
     this.baseUrl = baseUrl
   }
 
-  // Получить все строки услуг
+  // Оказание услуги
+  async deliverService(serviceStringID: number, amount: number): Promise<ServiceString> {
+    const response = await fetch(`${this.baseUrl}/ServiceString/deliver`
+      + `?serviceStringID=${encodeURIComponent(serviceStringID)}`
+      + `&amount=${encodeURIComponent(amount)}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+    });
+  
+    if (!response.ok) {
+      const errorData = await response.json(); // читаем JSON один раз
+      console.error(`Ошибка оказания услуги: ${response.status} - ${JSON.stringify(errorData)}`);
+      throw new Error(`Failed to deliver service: ${errorData.message || 'Unknown error'}`);
+    }
+  
+    return await response.json(); // ← безопасно, потому что только при OK
+  }
+  
+
+  // Получение всех строк услуг
   async getServiceStrings(): Promise<ServiceString[]> {
     const response = await fetch(`${this.baseUrl}/ServiceString`)
     if (!response.ok) throw new Error("Не удалось загрузить строки услуг")
     return await response.json()
   }
 
-  // Создать новую строку услуги
+  // Создание новой строки услуги
   async createServiceString(service: Omit<ServiceString, "id" | "serviceStatus">): Promise<ServiceString> {
     const response = await fetch(`${this.baseUrl}/ServiceString`, {
       method: "POST",
@@ -32,7 +51,7 @@ class ServiceStringService {
     return JSON.parse(responseText)
   }
 
-  // Обновить строку услуги
+  // Обновление строки услуги
   async updateServiceString(service: ServiceString): Promise<ServiceString> {
     const response = await fetch(`${this.baseUrl}/ServiceString/${service.id}`, {
       method: "PUT",
@@ -49,7 +68,7 @@ class ServiceStringService {
     return await response.json()
   }
 
-  // Удалить строку услуги
+  // Удаление строки услуги
   async deleteServiceString(id: number): Promise<void> {
     const response = await fetch(`${this.baseUrl}/ServiceString/${id}`, {
       method: "DELETE",

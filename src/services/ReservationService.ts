@@ -15,10 +15,43 @@ class ReservationService {
     return await response.json()
   }
 
+  // Получение бронирования по айди
+  async getReservationById(id: number): Promise<Reservation> {
+    const response = await fetch(`${this.baseUrl}/Reservation/${id}`);
+    if (!response.ok) {
+      throw new Error("Ошибка загрузки бронирования");
+    }
+    return await response.json();
+  }
+  
   // Получение списка всех бронирований текущего пользователя
   async getReservationsForUser(): Promise<Reservation[]> {
     const response = await fetch(`${this.baseUrl}/Reservation/userReservations`)
     if (!response.ok) throw new Error("Failed to fetch reservations")
+    return await response.json()
+  }
+
+  //Получение списка бронирований для пользователя с указанным паспортом
+  async getReservationsByPassport(passport: string): Promise<Reservation[]> {
+    const response = await fetch(`${this.baseUrl}/Reservation/passportReservations?passport=${encodeURIComponent(passport)}`);
+    if (!response.ok) throw new Error("Failed to fetch reservations");
+    return await response.json();
+}
+
+  //Подтверждение оплаты доп.услуг
+  async confirmServicesPayment(res: Reservation): Promise<Reservation> {
+    const response = await fetch(`${this.baseUrl}/Reservation/confirmPayment`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(res),
+    })
+
+    if (!response.ok) {
+      const errorText = await response.text()
+      console.error(`Ошибка подтверждения оплаты бронирования: ${response.status} - ${errorText}`)
+      throw new Error(`Failed to update reservation: ${response.status} - ${errorText}`)
+    }
+
     return await response.json()
   }
 
@@ -73,6 +106,7 @@ class ReservationService {
     }
   }
 
+  //Расчет промежуточной цены
   async calculatePrice(
     arrivalDate: string,
     departureDate: string,

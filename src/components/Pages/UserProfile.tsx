@@ -96,13 +96,13 @@ const UserProfile: React.FC = () => {
 
                   </Typography>
                   <Typography>
-                    <strong>Стоимость проживания:</strong> {res.livingPrice} ₽
+                    <strong>Стоимость проживания:</strong> {res.livingPrice}₽
                   </Typography>
                   <Typography>
-                    <strong>К оплате за дополнительные услуги:</strong> {res.servicesPrice} ₽
+                    <strong>К оплате за дополнительные услуги:</strong> {res.servicesPrice}₽
                   </Typography>
                   <Typography>
-                    <strong>Итого:</strong> {res.fullPrice} ₽
+                    <strong>Итого:</strong> {res.fullPrice}₽
                   </Typography>
                 </Stack>
               </CardContent>

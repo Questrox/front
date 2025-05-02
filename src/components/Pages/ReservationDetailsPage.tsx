@@ -15,7 +15,7 @@ import {
   import { useNavigate, useParams } from "react-router-dom"
   import { Reservation } from "../../models/reservation"
   import { ServiceString } from "../../models/serviceString"
-import { AdditionalService } from "../../models/additionalService"
+  import { AdditionalService } from "../../models/additionalService"
   
   function formatDate(dateString: string): string {
     const date = new Date(dateString)
@@ -113,52 +113,60 @@ import { AdditionalService } from "../../models/additionalService"
   
         <Typography><strong>Дата заезда:</strong> {formatDate(reservation.arrivalDate)}</Typography>
         <Typography><strong>Дата выезда:</strong> {formatDate(reservation.departureDate)}</Typography>
-        <Typography><strong>Общая стоимость:</strong> {reservation.fullPrice} ₽</Typography>
-        <Typography><strong>Стоимость проживания:</strong> {reservation.livingPrice} ₽</Typography>
-        <Typography><strong>К оплате за услуги:</strong> {reservation.servicesPrice} ₽</Typography>
+        <Typography><strong>Общая стоимость:</strong> {reservation.fullPrice}₽</Typography>
+        <Typography><strong>Стоимость проживания:</strong> {reservation.livingPrice}₽</Typography>
+        <Typography><strong>К оплате за услуги:</strong> {reservation.servicesPrice}₽</Typography>
   
         <Typography variant="h6" sx={{ mt: 3 }}>
-          Дополнительные услуги
+            Дополнительные услуги
         </Typography>
+
+        {reservation.serviceStrings.length === 0 ? (
+        <Typography variant="body1" sx={{ mt: 1 }}>
+            Дополнительных услуг нет.
+        </Typography>
+        ) : (
         <List>
             {reservation.serviceStrings.map((service) => (
-                <ListItem key={service.id} divider>
+            <ListItem key={service.id} divider>
                 <ListItemText
-                    primary={service.additionalService.name}
-                    secondary={
+                primary={service.additionalService.name + ` (цена за штуку - ${service.price}₽)`}
+                secondary={
                     <>
-                        <Chip
+                    <Chip
                         label={service.serviceStatus.status}
                         color={getStatusColor(service.serviceStatusID)}
                         size="small"
                         sx={{ mr: 1 }}
-                        />
-                        {`Оказано: ${service.deliveredCount} / ${service.count}`}
+                    />
+                    {`Оказано: ${service.deliveredCount} / ${service.count}`}
                     </>
-                    }
+                }
                 />
                 {service.deliveredCount === 0 && service.serviceStatusID === 1 && (
-                    <Button
+                <Button
                     variant="outlined"
                     color="error"
                     onClick={() => handleCancelService(service)}
-                    >
+                >
                     Отменить
-                    </Button>
+                </Button>
                 )}
-                </ListItem>
+            </ListItem>
             ))}
-            </List>
+        </List>
+        )}
+
   
         <Box sx={{ mt: 3 }}>
           <Typography variant="h6">Добавить услугу</Typography>
           <Autocomplete
             options={context?.services || []}
-            getOptionLabel={(option) => option.name}
+            getOptionLabel={(option) => option.name + ` (${option.price}₽ за штуку)`}
             value={selectedService}
             onChange={(_, newValue) => setSelectedService(newValue)}
             renderInput={(params) => 
-                <TextField {...params} label="Выберите услугу" sx={{ width: 300, mr: 2 }} />
+                <TextField {...params} label="Выберите услугу" sx={{ width: 500, mr: 2 }} />
             }
             sx={{ mt: 1, mb: 2 }}
             />

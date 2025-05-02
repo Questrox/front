@@ -35,6 +35,9 @@ import "dayjs/locale/ru";
 import { CreateReservationProvider } from "./context/CreateReservationContext"
 import { CircularProgress } from "@mui/material"
 import ReservationDetailsPage from "./components/Pages/ReservationDetailsPage"
+import { AdminReservationProvider } from "./context/AdminReservationsContext"
+import AdminReservationsPage from "./components/Pages/AdminReservationsPage"
+import AdminReservationDetailsPage from "./components/Pages/AdminReservationDetailsPage"
 
 dayjs.locale("ru");
 
@@ -165,6 +168,19 @@ const App: React.FC = () => {
                     <Route path=":id" element={<AdditionalServiceDetails />} />
                   </Routes>
                 </AdditionalServiceProvider>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/adminReservations/*"
+            element={
+              <ProtectedRoute adminOnly>
+                <AdminReservationProvider>
+                  <Routes>
+                    <Route path="" element={<AdminReservationsPage />} />
+                    <Route path=":id" element={<AdminReservationDetailsPage />} />
+                  </Routes>
+                </AdminReservationProvider>
               </ProtectedRoute>
             }
           />
