@@ -99,7 +99,7 @@ const UserProfile: React.FC = () => {
                     <strong>Стоимость проживания:</strong> {res.livingPrice} ₽
                   </Typography>
                   <Typography>
-                    <strong>Стоимость дополнительных услуг:</strong> {res.servicesPrice} ₽
+                    <strong>К оплате за дополнительные услуги:</strong> {res.servicesPrice} ₽
                   </Typography>
                   <Typography>
                     <strong>Итого:</strong> {res.fullPrice} ₽
@@ -110,11 +110,11 @@ const UserProfile: React.FC = () => {
               <Divider />
 
               <CardActions sx={{ justifyContent: "flex-end", gap: 1, p: 2 }}>
-                {res.reservationStatusID !== 4 && (
+                {res.reservationStatusID < 3 && (
                   <Button
                     variant="outlined"
                     color="primary"
-                    onClick={() => navigate(`/reservation/${res.id}`)}
+                    onClick={() => navigate(`./${res.id}`)}
                   >
                     Управление
                   </Button>

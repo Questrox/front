@@ -34,6 +34,7 @@ import dayjs from "dayjs"
 import "dayjs/locale/ru";
 import { CreateReservationProvider } from "./context/CreateReservationContext"
 import { CircularProgress } from "@mui/material"
+import ReservationDetailsPage from "./components/Pages/ReservationDetailsPage"
 
 dayjs.locale("ru");
 
@@ -104,7 +105,7 @@ const App: React.FC = () => {
                   <Routes>
                     <Route path="" element={<UserProfile />} />
                     <Route path="booking" element={<ReservationPage />} />
-                    <Route path=":id" element={<UserDetails />} />
+                    <Route path=":id" element={<ReservationDetailsPage />} />
                   </Routes>
                 </UserProfileProvider>
                 </CreateReservationProvider>

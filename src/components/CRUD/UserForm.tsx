@@ -21,7 +21,6 @@ const UserForm: React.FC<UserFormProps> = ({ existingUser }) => {
   const [user, setUser] = useState<Omit<User, "id">>({
     fullName: existingUser?.fullName || "",
     passport: existingUser?.passport || "",
-    discount: existingUser?.discount || 0,
   })
 
   useEffect(() => {
@@ -29,7 +28,6 @@ const UserForm: React.FC<UserFormProps> = ({ existingUser }) => {
       setUser({
         fullName: existingUser.fullName,
         passport: existingUser.passport,
-        discount: existingUser.discount,
       })
     }
   }, [existingUser])
@@ -72,16 +70,6 @@ const UserForm: React.FC<UserFormProps> = ({ existingUser }) => {
             required
             multiline
             onChange={(e) => setUser({ ...user, passport: e.target.value })}
-          />
-          <TextField
-            label="Скидка (%)"
-            type="number"
-            value={user.discount}
-            required
-            inputProps={{ min: 0, max: 100 }}
-            onChange={(e) =>
-              setUser({ ...user, discount: parseInt(e.target.value, 10) || 0 })
-            }
           />
 
           <Stack direction="row" spacing={2}>

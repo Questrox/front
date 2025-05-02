@@ -248,7 +248,7 @@ const ReservationPage = () => {
       })}
 
       <Typography variant="h5" sx={{ mt: 2 }}>
-        Итого: {totalCost}₽
+        Итого (если будут оказаны все услуги): {totalCost}₽
       </Typography>
       <Button
         variant="contained"

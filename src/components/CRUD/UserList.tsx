@@ -24,7 +24,7 @@ const UserList: React.FC = () => {
         Пользователи
       </Typography>
 
-      <Button variant="contained" color="primary" onClick={() => navigate("/roomTypes/add")}>
+      <Button variant="contained" color="primary" onClick={() => navigate("/users/add")}>
         Добавить нового пользователя
       </Button>
 

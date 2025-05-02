@@ -43,7 +43,6 @@ const UserDetails: React.FC = () => {
           </Typography>
           <Typography><strong>ФИО:</strong> {user.fullName}</Typography>
           <Typography><strong>Паспорт:</strong> {user.passport}</Typography>
-          <Typography><strong>Скидка:</strong> {user.discount}%</Typography>
         </CardContent>
       </Card>
 
