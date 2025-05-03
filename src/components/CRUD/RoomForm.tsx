@@ -78,7 +78,8 @@ const RoomForm: React.FC<RoomFormProps> = ({ existingRoom }) => {
                         type="number"
                         value={room.number}
                         required
-                        inputProps={{ min: 1 }}
+                        InputProps={{ sx: { background: "#fffafa", } }}
+                        inputProps={{ min: 1, }}
                         onChange={(e) => setRoom({ ...room, number: parseInt(e.target.value, 10) })}
                     />
                     <Autocomplete
@@ -92,9 +93,16 @@ const RoomForm: React.FC<RoomFormProps> = ({ existingRoom }) => {
                                 }));
                             }
                         }}
+                        
                         options={types}
                         getOptionLabel={(option) => `${option.guestCapacity}-местный ${option.roomCategory.category}`}
-                        renderInput={(params) => <TextField {...params} label="Тип номера" required />}
+                        renderInput={(params) => <TextField {...params} label="Тип номера" required
+                        InputProps={{
+                            ...params.InputProps,
+                            sx: {
+                              background: "#fffafa",
+                            },
+                          }} />}
                         isOptionEqualToValue={(option, value) => option.id === value.id}
                     />
                     <Stack direction="row" spacing={2}>

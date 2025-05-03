@@ -3,7 +3,6 @@ import { Routes, Route, Navigate } from "react-router-dom"
 import Layout from "./components/Layout/Layout"
 import Home from "./components/Pages/Home"
 import Page1 from "./components/Pages/Page1"
-import ReservationPage from "./components/Pages/CreateReservationPage"
 import AdminPanel from "./components/Pages/AdminPanel"
 import { AuthProvider } from "./context/AuthContext"
 import { useAuth } from "./context/AuthContext"
@@ -38,6 +37,7 @@ import ReservationDetailsPage from "./components/Pages/ReservationDetailsPage"
 import { AdminReservationProvider } from "./context/AdminReservationsContext"
 import AdminReservationsPage from "./components/Pages/AdminReservationsPage"
 import AdminReservationDetailsPage from "./components/Pages/AdminReservationDetailsPage"
+import ReservationPage from "./components/Pages/ReservationPage"
 
 dayjs.locale("ru");
 
@@ -56,7 +56,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactElement; adminOnly?: boole
   }
 
   if (!user) {
-    alert("Недостаточно прав. Выполните вход!")
+    alert("Необходимо выполнить вход!")
     // Если пользователь не авторизован, показываем уведомление.
     return <Navigate to="/" replace />
     // Перенаправляем на главную страницу.

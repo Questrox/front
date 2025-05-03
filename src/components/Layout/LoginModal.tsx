@@ -77,6 +77,11 @@ const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
               label="Имя пользователя"
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
+              InputProps={{
+                sx: {
+                  background: "#fffafa", 
+                },
+              }}
               // При изменении текста обновляем состояние userName.
               required
               fullWidth
@@ -88,6 +93,11 @@ const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              InputProps={{
+                sx: {
+                  background: "#fffafa", 
+                },
+              }}
               // При изменении текста обновляем состояние password.
               required
               fullWidth

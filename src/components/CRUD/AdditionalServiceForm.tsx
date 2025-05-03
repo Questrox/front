@@ -53,6 +53,7 @@ const AdditionalServiceForm: React.FC<AdditionalServiceFormProps> = ({ existingS
           <TextField
             label="Название услуги"
             value={service.name}
+            InputProps={{ sx: { background: "#fffafa", },}}
             required
             onChange={(e) => setService({ ...service, name: e.target.value })}
           />
@@ -61,6 +62,7 @@ const AdditionalServiceForm: React.FC<AdditionalServiceFormProps> = ({ existingS
             type="number"
             value={service.price}
             required
+            InputProps={{ sx: { background: "#fffafa", },}}
             inputProps={{ min: 0 }}
             onChange={(e) => setService({ ...service, price: parseFloat(e.target.value) })}
           />

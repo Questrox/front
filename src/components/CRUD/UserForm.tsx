@@ -62,12 +62,14 @@ const UserForm: React.FC<UserFormProps> = ({ existingUser }) => {
             label="ФИО"
             value={user.fullName}
             required
+            InputProps={{ sx: { background: "#fffafa", } }}
             onChange={(e) => setUser({ ...user, fullName: e.target.value })}
           />
           <TextField
             label="Паспортные данные"
             value={user.passport}
             required
+            InputProps={{ sx: { background: "#fffafa", } }}
             multiline
             onChange={(e) => setUser({ ...user, passport: e.target.value })}
           />

@@ -52,10 +52,14 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onClose }) => {
 
         <form onSubmit={handleSubmit}>
           <Stack spacing={2}>
-            <TextField label="ФИО" value={fullName} onChange={(e) => setFullName(e.target.value)} required fullWidth />
-            <TextField label="Паспорт" value={passport} onChange={(e) => setPassport(e.target.value)} required fullWidth />
-            <TextField label="Логин" value={userName} onChange={(e) => setUserName(e.target.value)} required fullWidth />
-            <TextField label="Пароль" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required fullWidth />
+            <TextField label="ФИО" value={fullName} onChange={(e) => setFullName(e.target.value)} required fullWidth 
+              InputProps={{ sx: { background: "#fffafa", },}}/>
+            <TextField label="Паспорт" value={passport} onChange={(e) => setPassport(e.target.value)} required fullWidth 
+              InputProps={{ sx: { background: "#fffafa", },}}/>
+            <TextField label="Логин" value={userName} onChange={(e) => setUserName(e.target.value)} required fullWidth 
+             InputProps={{ sx: { background: "#fffafa", },}}/>
+            <TextField label="Пароль" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required fullWidth
+            InputProps={{ sx: { background: "#fffafa", },}} />
             {error && <Typography color="error">{error}</Typography>}
             <Button
               type="submit"

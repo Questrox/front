@@ -86,6 +86,7 @@ const RoomTypeForm: React.FC<RoomTypeFormProps> = ({ existingType }) => {
                 type="number"
                 value={type.guestCapacity}
                 required
+                InputProps={{ sx: { background: "#fffafa", },}}
                 inputProps={{ min: 1, max: 10 }}
                 onChange={(e) => setType({ ...type, guestCapacity: parseInt(e.target.value, 10) })}
               />
@@ -94,6 +95,7 @@ const RoomTypeForm: React.FC<RoomTypeFormProps> = ({ existingType }) => {
                 type="number"
                 value={type.price}
                 required
+                InputProps={{ sx: { background: "#fffafa", },}}
                 inputProps={{ min: 0 }}
                 onChange={(e) =>
                   setType({ ...type, price: parseInt(e.target.value, 10) || 0 })
@@ -104,6 +106,7 @@ const RoomTypeForm: React.FC<RoomTypeFormProps> = ({ existingType }) => {
                 value={type.description}
                 required
                 multiline
+                InputProps={{ sx: { background: "#fffafa", },}}
                 onChange={(e) => setType({ ...type, description: e.target.value })}
               />
               <Autocomplete
@@ -122,7 +125,13 @@ const RoomTypeForm: React.FC<RoomTypeFormProps> = ({ existingType }) => {
                 }}
                 options={categories} // список объектов
                 getOptionLabel={(option) => option.category} // отображаемое значение
-                renderInput={(params) => <TextField {...params} label="Категория комнаты" required />}
+                renderInput={(params) => <TextField {...params} label="Категория комнаты" required 
+                InputProps={{
+                  ...params.InputProps,
+                  sx: {
+                    background: "#fffafa",
+                  },
+                }}/>}
                 isOptionEqualToValue={(option, value) => option.id === value.id} // сравниваем объекты по уникальному идентификатору
                 />
 

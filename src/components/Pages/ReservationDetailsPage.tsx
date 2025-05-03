@@ -7,8 +7,11 @@ import {
     Button,
     TextField,
     MenuItem,
+    Divider,
     Autocomplete,
-    Chip
+    Chip,
+    Paper,
+    Stack
   } from "@mui/material"
   import { useContext, useEffect, useState } from "react"
   import { UserProfileContext } from "../../context/UserProfileContext"
@@ -16,6 +19,9 @@ import {
   import { Reservation } from "../../models/reservation"
   import { ServiceString } from "../../models/serviceString"
   import { AdditionalService } from "../../models/additionalService"
+  import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
+  import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+  import CancelIcon from "@mui/icons-material/Cancel";
   
   function formatDate(dateString: string): string {
     const date = new Date(dateString)
@@ -30,6 +36,14 @@ import {
       case 2: return 'success'; // оплачена
       case 3: return 'error';   // отменена
       default: return 'default';
+    }
+  };
+  const getStatusIcon = (statusId: number) => {
+    switch (statusId) {
+      case 1: return <HourglassEmptyIcon /> ; // ожидание
+      case 2: return <CheckCircleIcon /> ; // оплачена
+      case 3: return <CancelIcon /> ;   // отменена
+      default: return undefined;
     }
   };
 
@@ -106,84 +120,104 @@ import {
     if (!reservation) return <Typography>Бронирование не найдено!</Typography>
   
     return (
-      <Box sx={{ p: 2 }}>
-        <Typography variant="h5" gutterBottom>
-          Детали бронирования
-        </Typography>
-  
-        <Typography><strong>Дата заезда:</strong> {formatDate(reservation.arrivalDate)}</Typography>
-        <Typography><strong>Дата выезда:</strong> {formatDate(reservation.departureDate)}</Typography>
-        <Typography><strong>Общая стоимость:</strong> {reservation.fullPrice}₽</Typography>
-        <Typography><strong>Стоимость проживания:</strong> {reservation.livingPrice}₽</Typography>
-        <Typography><strong>К оплате за услуги:</strong> {reservation.servicesPrice}₽</Typography>
-  
-        <Typography variant="h6" sx={{ mt: 3 }}>
-            Дополнительные услуги
-        </Typography>
+      <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
+  <Typography variant="h5" gutterBottom>
+    Детали бронирования
+  </Typography>
 
-        {reservation.serviceStrings.length === 0 ? (
-        <Typography variant="body1" sx={{ mt: 1 }}>
-            Дополнительных услуг нет.
-        </Typography>
-        ) : (
-        <List>
-            {reservation.serviceStrings.map((service) => (
-            <ListItem key={service.id} divider>
-                <ListItemText
-                primary={service.additionalService.name + ` (цена за штуку - ${service.price}₽)`}
-                secondary={
-                    <>
-                    <Chip
-                        label={service.serviceStatus.status}
-                        color={getStatusColor(service.serviceStatusID)}
-                        size="small"
-                        sx={{ mr: 1 }}
-                    />
-                    {`Оказано: ${service.deliveredCount} / ${service.count}`}
-                    </>
-                }
-                />
-                {service.deliveredCount === 0 && service.serviceStatusID === 1 && (
-                <Button
-                    variant="outlined"
-                    color="error"
-                    onClick={() => handleCancelService(service)}
-                >
-                    Отменить
-                </Button>
-                )}
-            </ListItem>
-            ))}
-        </List>
-        )}
+  <Stack spacing={1} sx={{ mb: 3 }}>
+    <Typography><strong>Дата заезда:</strong> {formatDate(reservation.arrivalDate)}</Typography>
+    <Typography><strong>Дата выезда:</strong> {formatDate(reservation.departureDate)}</Typography>
+    <Typography><strong>Стоимость проживания:</strong> {reservation.livingPrice}₽</Typography>
+    <Typography><strong>К оплате за услуги:</strong> {reservation.servicesPrice}₽</Typography>
+    <Typography><strong>Общая стоимость:</strong> {reservation.fullPrice}₽</Typography>
+  </Stack>
 
-  
-        <Box sx={{ mt: 3 }}>
-          <Typography variant="h6">Добавить услугу</Typography>
-          <Autocomplete
-            options={context?.services || []}
-            getOptionLabel={(option) => option.name + ` (${option.price}₽ за штуку)`}
-            value={selectedService}
-            onChange={(_, newValue) => setSelectedService(newValue)}
-            renderInput={(params) => 
-                <TextField {...params} label="Выберите услугу" sx={{ width: 500, mr: 2 }} />
-            }
-            sx={{ mt: 1, mb: 2 }}
-            />
+  <Divider sx={{ my: 2 }} />
 
-          <TextField
-            label="Количество"
-            type="number"
-            value={selectedCount}
-            inputProps={{ min: 1 }}
-            onChange={(e) => setSelectedCount(Number(e.target.value))}
-            sx={{ mr: 2, width: 100 }}
-          />
-          <Button variant="contained" onClick={handleAddService}>
-            Добавить
-          </Button>
-        </Box>
-      </Box>
+  <Typography variant="h6" gutterBottom>
+    Дополнительные услуги
+  </Typography>
+
+  {reservation.serviceStrings.length === 0 ? (
+    <Typography color="text.secondary">Дополнительных услуг нет.</Typography>
+  ) : (
+    <Stack spacing={2}>
+      {reservation.serviceStrings.map((service) => (
+        <Paper
+          key={service.id}
+          variant="outlined"
+          sx={{
+            p: 2,
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            borderRadius: 1,
+          }}
+        >
+          <Box>
+            <Typography variant="subtitle1">
+              {service.additionalService.name} ({service.additionalService.price}₽ / шт)
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              <Chip
+                label={service.serviceStatus.status}
+                color={getStatusColor(service.serviceStatusID)}
+                icon={getStatusIcon(service.serviceStatusID)}
+                size="small"
+                sx={{ mr: 1 }}
+              />
+              {`Оказано: ${service.deliveredCount} / ${service.count}`}
+            </Typography>
+          </Box>
+          {service.deliveredCount === 0 && service.serviceStatusID === 1 && (
+            <Button
+              variant="outlined"
+              color="error"
+              onClick={() => handleCancelService(service)}
+            >
+              Отменить
+            </Button>
+          )}
+        </Paper>
+      ))}
+    </Stack>
+  )}
+
+  <Divider sx={{ my: 3 }} />
+
+  <Typography variant="h6" gutterBottom>
+    Добавить услугу
+  </Typography>
+
+  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems="center">
+    <Autocomplete
+      options={context?.services || []}
+      getOptionLabel={(option) => `${option.name} (${option.price}₽ / шт)`}
+      value={selectedService}
+      onChange={(_, newValue) => setSelectedService(newValue)}
+      renderInput={(params) => (
+        <TextField {...params} label="Выберите услугу" sx={{ minWidth: 500 }} />
+      )}
+    />
+    <TextField
+      label="Количество"
+      type="number"
+      value={selectedCount}
+      inputProps={{ min: 1 }}
+      onChange={(e) => setSelectedCount(Number(e.target.value))}
+      sx={{ width: 120 }}
+    />
+    <Button
+      variant="contained"
+      onClick={handleAddService}
+      disabled={!selectedService || selectedCount < 1}
+    >
+      Добавить
+    </Button>
+  </Stack>
+</Paper>
+
     )
   }
   

@@ -1,17 +1,17 @@
 import React, { useState } from "react"
 import { Box } from "@mui/material"
-import RegisterModal from "../Layout/RegisterModal"
+import ReservationModal from "./ReservationModal"
 import { useNavigate } from "react-router-dom"
 
-const RegisterPage: React.FC = () => {
+const ReservationPage: React.FC = () => {
   const [open, setOpen] = useState(true)
   const navigate = useNavigate()
 
   return (
     <Box>
-      <RegisterModal open={open} onClose={() => {setOpen(false); navigate("/")}} />
+      <ReservationModal open={open} onClose={() => {setOpen(false); navigate("/userProfile")}} />
     </Box>
   )
 }
 
-export default RegisterPage
+export default ReservationPage
