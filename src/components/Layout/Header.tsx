@@ -30,7 +30,7 @@ import React, { useState } from "react"
 
 const NAV_ITEMS = [
   { label: "Домашняя", path: "/", icon: <HomeIcon fontSize="small" /> },
-  { label: "Наши номера", path: "/page1", icon: <MailIcon fontSize="small" /> },
+  { label: "Наши номера", path: "/ourRooms", icon: <MailIcon fontSize="small" /> },
   { label: "Личный кабинет", path: "/userProfile", icon: <AccountBoxIcon fontSize="small" /> },
   { label: "Панель администратора", path: "/adminPanel", icon: <SettingsIcon fontSize="small" /> },
 ]

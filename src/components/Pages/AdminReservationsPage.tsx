@@ -56,7 +56,7 @@ const AdminReservationsPage: React.FC = () => {
   return (
     <Box maxWidth="md" mx="auto" mt={4}>
       <Paper elevation={3} sx={{ p: 4, borderRadius: 3 }}>
-        <Typography variant="h5" gutterBottom>
+        <Typography variant="h5" gutterBottom align="center">
           Поиск бронирований по паспорту
         </Typography>
 

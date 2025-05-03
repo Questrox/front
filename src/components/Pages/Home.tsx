@@ -7,11 +7,12 @@ import {
   useTheme,
   Fade,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Hotel, EmojiPeople, LocationOn } from "@mui/icons-material";
 
 const Home = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
 
   return (
     <Box sx={{ px: { xs: 2, sm: 4, md: 8 } }}>
@@ -65,16 +66,14 @@ const Home = () => {
               spacing={2}
             >
               <Button
-                component={Link}
-                to="/booking"
+                onClick={() => navigate("/userProfile")}
                 variant="contained"
                 size="large"
               >
                 Забронировать сейчас
               </Button>
               <Button
-                component={Link}
-                to="/page1"
+                onClick={() => navigate("/ourRooms")}
                 variant="outlined"
                 color="inherit"
                 size="large"

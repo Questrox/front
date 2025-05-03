@@ -45,7 +45,7 @@ const AdditionalServiceForm: React.FC<AdditionalServiceFormProps> = ({ existingS
 
   return (
     <Box p={3}>
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h4" gutterBottom align="center">
         {existingService ? "Редактировать услугу" : "Добавить новую услугу"}
       </Typography>
       <Box component="form" onSubmit={handleSubmit}>

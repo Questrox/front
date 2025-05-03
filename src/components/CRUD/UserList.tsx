@@ -20,13 +20,9 @@ const UserList: React.FC = () => {
 
   return (
     <Box p={3}>
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h4" gutterBottom align="center">
         Пользователи
       </Typography>
-
-      <Button variant="contained" color="primary" onClick={() => navigate("/users/add")}>
-        Добавить нового пользователя
-      </Button>
 
       <Stack spacing={2} mt={3}>
         {users.map((user) => (
@@ -53,9 +49,18 @@ const UserList: React.FC = () => {
         ))}
       </Stack>
 
-      <Button sx={{ mt: 4 }} onClick={() => navigate("/adminPanel")}>
-        Назад
+      <Stack direction="row" spacing={2} justifyContent="center" mt={4}>
+        <Button
+          variant="outlined"
+          onClick={() => navigate("/adminPanel")}
+          sx={{ flex: 1, maxWidth: 200 }}
+        >
+          Назад
+        </Button>
+        <Button variant="contained" color="primary" onClick={() => navigate("/users/add")}>
+        Добавить нового пользователя
       </Button>
+      </Stack>
     </Box>
   )
 }

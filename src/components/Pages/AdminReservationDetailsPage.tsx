@@ -102,7 +102,7 @@ const AdminReservationDetailsPage: React.FC = () => {
     <Container maxWidth="md" sx={{ py: 4 }}>
       {reservation && (
         <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
-          <Typography variant="h5" gutterBottom>
+          <Typography variant="h5" gutterBottom align="center">
             Детали бронирования
           </Typography>
 

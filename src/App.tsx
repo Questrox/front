@@ -2,7 +2,7 @@ import React from "react"
 import { Routes, Route, Navigate } from "react-router-dom"
 import Layout from "./components/Layout/Layout"
 import Home from "./components/Pages/Home"
-import Page1 from "./components/Pages/Page1"
+import Page1 from "./components/Pages/OurRoomsPage"
 import AdminPanel from "./components/Pages/AdminPanel"
 import { AuthProvider } from "./context/AuthContext"
 import { useAuth } from "./context/AuthContext"
@@ -38,6 +38,8 @@ import { AdminReservationProvider } from "./context/AdminReservationsContext"
 import AdminReservationsPage from "./components/Pages/AdminReservationsPage"
 import AdminReservationDetailsPage from "./components/Pages/AdminReservationDetailsPage"
 import ReservationPage from "./components/Pages/ReservationPage"
+import OurRoomsPage from "./components/Pages/OurRoomsPage"
+import { OurRoomsProvider } from "./context/OurRoomsContext"
 
 dayjs.locale("ru");
 
@@ -88,8 +90,14 @@ const App: React.FC = () => {
           {/* Маршрут страницы входа. */}
           <Route path="/register" element={<RegisterPage />} />
           {/* Маршрут страницы регистрации. */}
-          <Route path="/page1" element={<Page1 />} />
-          {/* Маршрут для Page1 без ограничений. */}
+          <Route
+          path="/ourRooms"
+          element={
+            <OurRoomsProvider>
+              <OurRoomsPage />
+            </OurRoomsProvider>
+          }
+        />
           <Route
             path="/adminPanel"
             element={

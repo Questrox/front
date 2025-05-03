@@ -68,7 +68,7 @@ const RoomForm: React.FC<RoomFormProps> = ({ existingRoom }) => {
 
     return (
         <Box p={3}>
-            <Typography variant="h4" gutterBottom>
+            <Typography variant="h4" gutterBottom align="center">
                 {existingRoom ? "Редактировать комнату" : "Добавить новую комнату"}
             </Typography>
             <Box component="form" onSubmit={handleSubmit}>

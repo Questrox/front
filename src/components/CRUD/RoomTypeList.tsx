@@ -11,13 +11,9 @@ const RoomTypeList: React.FC = () =>
     const { roomTypes, deleteType } = context
     return (
         <Box p={3}>
-          <Typography variant="h4" gutterBottom>
+          <Typography variant="h4" gutterBottom align="center">
             Типы комнат
           </Typography>
-    
-          <Button variant="contained" color="primary" onClick={() => navigate("/roomTypes/add")}>
-            Добавить новый тип
-          </Button>
     
           <Stack spacing={2} mt={3}>
             {roomTypes.map((rt) => (
@@ -44,9 +40,18 @@ const RoomTypeList: React.FC = () =>
             ))}
           </Stack>
     
-          <Button sx={{ mt: 4 }} onClick={() => navigate("/adminPanel")}>
-            Назад
-          </Button>
+          <Stack direction="row" spacing={2} justifyContent="center" mt={4}>
+        <Button
+          variant="outlined"
+          onClick={() => navigate("/adminPanel")}
+          sx={{ flex: 1, maxWidth: 200 }}
+        >
+          Назад
+        </Button>
+        <Button variant="contained" color="primary" onClick={() => navigate("/roomTypes/add")}>
+        Добавить тип комнаты
+      </Button>
+      </Stack>
         </Box>
       )
     }

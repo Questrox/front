@@ -121,7 +121,7 @@ import {
   
     return (
       <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
-  <Typography variant="h5" gutterBottom>
+  <Typography variant="h5" gutterBottom align="center">
     Детали бронирования
   </Typography>
 

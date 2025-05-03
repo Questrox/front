@@ -53,7 +53,7 @@ const UserForm: React.FC<UserFormProps> = ({ existingUser }) => {
 
   return (
     <Box p={3}>
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h4" gutterBottom align="center">
         {existingUser ? "Редактировать пользователя" : "Добавить нового пользователя"}
       </Typography>
       <Box component="form" onSubmit={handleSubmit}>

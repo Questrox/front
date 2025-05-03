@@ -76,7 +76,7 @@ const RoomTypeForm: React.FC<RoomTypeFormProps> = ({ existingType }) => {
     }
       return (
         <Box p={3}>
-          <Typography variant="h4" gutterBottom>
+          <Typography variant="h4" gutterBottom align="center">
             {existingType ? "Редактировать тип" : "Добавить новый тип комнаты"}
           </Typography>
           <Box component="form" onSubmit={handleSubmit}>

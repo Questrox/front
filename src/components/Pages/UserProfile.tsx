@@ -63,7 +63,7 @@ const UserProfile: React.FC = () => {
   </Box>
 
   <Paper elevation={3} sx={{ p: 3, borderRadius: 2, mb: 5 }}>
-    <Typography variant="h5" component="h2" gutterBottom>
+    <Typography variant="h5" component="h2" gutterBottom align="center">
       Мои бронирования
     </Typography>
 
