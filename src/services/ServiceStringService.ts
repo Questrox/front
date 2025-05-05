@@ -1,5 +1,8 @@
 import { ServiceString } from "../models/serviceString"
 
+/**
+ * Сервис для работы со строками услуг.
+ */
 class ServiceStringService {
   private baseUrl: string
 
@@ -7,7 +10,13 @@ class ServiceStringService {
     this.baseUrl = baseUrl
   }
 
-  // Оказание услуги
+  /**
+   * Оказывает определенное количество какой-то услуги.
+   * @param serviceStringID Идентификатор строки услуги.
+   * @param amount Количество оказываемых услуг.
+   * @returns Обновленная строка услуги.
+   * @throws Ошибка, если не удалось оказать услугу.
+   */
   async deliverService(serviceStringID: number, amount: number): Promise<ServiceString> {
     const response = await fetch(`${this.baseUrl}/ServiceString/deliver`
       + `?serviceStringID=${encodeURIComponent(serviceStringID)}`
@@ -17,23 +26,31 @@ class ServiceStringService {
     });
   
     if (!response.ok) {
-      const errorData = await response.json(); // читаем JSON один раз
+      const errorData = await response.json();
       console.error(`Ошибка оказания услуги: ${response.status} - ${JSON.stringify(errorData)}`);
       throw new Error(`Failed to deliver service: ${errorData.message || 'Unknown error'}`);
     }
   
-    return await response.json(); // ← безопасно, потому что только при OK
+    return await response.json();
   }
-  
 
-  // Получение всех строк услуг
+  /**
+   * Получает все строки услуг.
+   * @returns Массив строк услуг.
+   * @throws Ошибка, если не удалось загрузить строки.
+   */
   async getServiceStrings(): Promise<ServiceString[]> {
     const response = await fetch(`${this.baseUrl}/ServiceString`)
     if (!response.ok) throw new Error("Не удалось загрузить строки услуг")
     return await response.json()
   }
 
-  // Создание новой строки услуги
+  /**
+   * Создает новую строку услуги.
+   * @param service Данные новой строки услуги (без id и статуса).
+   * @returns Созданная строка услуги.
+   * @throws Ошибка, если не удалось создать строку
+   */
   async createServiceString(service: Omit<ServiceString, "id" | "serviceStatus">): Promise<ServiceString> {
     const response = await fetch(`${this.baseUrl}/ServiceString`, {
       method: "POST",
@@ -51,7 +68,12 @@ class ServiceStringService {
     return JSON.parse(responseText)
   }
 
-  // Обновление строки услуги
+  /**
+   * Обновляет строку услуги.
+   * @param service Обновленные данные строки услуги.
+   * @returns Обновленная строка услуги.
+   * @throws Ошибка, если не удалось обновить строку.
+   */
   async updateServiceString(service: ServiceString): Promise<ServiceString> {
     const response = await fetch(`${this.baseUrl}/ServiceString/${service.id}`, {
       method: "PUT",
@@ -68,7 +90,11 @@ class ServiceStringService {
     return await response.json()
   }
 
-  // Удаление строки услуги
+  /**
+   * Удаляет строку услуги по идентификатору.
+   * @param id Идентификатор строки услуги.
+   * @throws Ошибка, если не удалось удалить строку.
+   */
   async deleteServiceString(id: number): Promise<void> {
     const response = await fetch(`${this.baseUrl}/ServiceString/${id}`, {
       method: "DELETE",

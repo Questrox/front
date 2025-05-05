@@ -1,6 +1,8 @@
 import { User } from "../models/user"
 
-// Класс для работы с API
+/**
+ * Сервис для работы с пользователями.
+ */
 class UserService {
   private baseUrl: string
 
@@ -8,14 +10,23 @@ class UserService {
     this.baseUrl = baseUrl
   }
 
-  // Получение списка всех пользователей
+  /**
+   * Получает список всех пользователей.
+   * @returns Массив пользователей.
+   * @throws Ошибка при неудачном ответе от сервера.
+   */
   async getUsers(): Promise<User[]> {
     const response = await fetch(`${this.baseUrl}/User`)
     if (!response.ok) throw new Error("Failed to fetch users")
     return await response.json()
   }
 
-  // Создание нового пользователя
+  /**
+   * Создает нового пользователя.
+   * @param user Данные нового пользователя (без id).
+   * @returns Созданный пользователь.
+   * @throws Ошибка при неудачном ответе от сервера.
+   */
   async createUser(user: Omit<User, "id">): Promise<User> {
     const response = await fetch(`${this.baseUrl}/User`, {
       method: "POST",
@@ -23,7 +34,7 @@ class UserService {
       body: JSON.stringify(user),
     })
   
-    const responseText = await response.text() // Читаем тело ответа
+    const responseText = await response.text()
   
     if (!response.ok) {
       console.error(`Ошибка запроса: ${response.status} - ${responseText}`)
@@ -33,7 +44,12 @@ class UserService {
     return JSON.parse(responseText)
   }
 
-  // Редактирование пользователя
+  /**
+   * Обновляет данные пользователя.
+   * @param user Объект пользователя с обновленными данными.
+   * @returns Обновленный пользователь.
+   * @throws Ошибка при неудачном ответе от сервера.
+   */
   async updateUser(user: User): Promise<User> {
     const response = await fetch(`${this.baseUrl}/User/${user.id}`, {
       method: "PUT",
@@ -47,10 +63,14 @@ class UserService {
       throw new Error(`Failed to update user: ${response.status} - ${errorText}`);
     }
   
-    return await response.json(); // Возвращаем обновленный объект пользователя
+    return await response.json();
   }
-  
-  // Удаление пользователя
+
+  /**
+   * Удаляет пользователя по ID.
+   * @param id Идентификатор пользователя.
+   * @throws Ошибка при неудачном ответе от сервера.
+   */
   async deleteUser(id: string): Promise<void> {
     const response = await fetch(`${this.baseUrl}/User/${id}`, {
       method: "DELETE",
@@ -62,8 +82,6 @@ class UserService {
       throw new Error(`Failed to delete user: ${response.status} - ${errorText}`);
     }
   }
-
-
 }
 
-export default new UserService("/api") // Экспортируем инстанс с базовым URL
+export default new UserService("/api")

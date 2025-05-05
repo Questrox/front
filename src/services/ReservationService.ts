@@ -1,6 +1,8 @@
 import { Reservation, ReservationToCreate } from "../models/reservation"
 import { SelectedService, ServiceString } from "../models/serviceString"
-
+/**
+ * Класс для взаимодействия с бронированиями через API
+ */
 class ReservationService {
   private baseUrl: string
 
@@ -8,14 +10,22 @@ class ReservationService {
     this.baseUrl = baseUrl
   }
 
-  // Получение списка всех бронирований
+  /**
+   * Получает список всех бронирований
+   * @returns Промис с массивом всех бронирований
+   */
   async getReservations(): Promise<Reservation[]> {
     const response = await fetch(`${this.baseUrl}/Reservation`)
     if (!response.ok) throw new Error("Failed to fetch reservations")
     return await response.json()
   }
 
-  // Получение бронирования по айди
+  /**
+   * Получает бронирование по идентификатору
+   * @param id Идентификатор бронирования
+   * @returns Найденное бронирование
+   * @throws Ошибка, если не удалось загрузить бронирование
+   */
   async getReservationById(id: number): Promise<Reservation> {
     const response = await fetch(`${this.baseUrl}/Reservation/${id}`);
     if (!response.ok) {
@@ -24,21 +34,35 @@ class ReservationService {
     return await response.json();
   }
   
-  // Получение списка всех бронирований текущего пользователя
+  /**
+   * Получает список бронирований для пользователя, который вошел в систему
+   * @returns Список бронирований для текущего пользователя
+   * @throws Ошибка, если не удалось получить бронирования
+   */
   async getReservationsForUser(): Promise<Reservation[]> {
     const response = await fetch(`${this.baseUrl}/Reservation/userReservations`)
     if (!response.ok) throw new Error("Failed to fetch reservations")
     return await response.json()
   }
 
-  //Получение списка бронирований для пользователя с указанным паспортом
+  /**
+   * Получает бронирования для пользователя с данным паспортом
+   * @param passport Паспортные данные пользователя
+   * @returns Список бронирований для пользователя с данным паспортом
+   * @throws Ошибка, если не удалось получить бронирования
+   */
   async getReservationsByPassport(passport: string): Promise<Reservation[]> {
     const response = await fetch(`${this.baseUrl}/Reservation/passportReservations?passport=${encodeURIComponent(passport)}`);
     if (!response.ok) throw new Error("Failed to fetch reservations");
     return await response.json();
 }
 
-  //Подтверждение оплаты доп.услуг
+  /**
+   * Подтверждает оплату дополнительных услуг в бронировании
+   * @param res Бронирование, для которого происходит подтверждение
+   * @returns Обновленное бронирование
+   * @throws Ошибка, если бронирование не удалось обновить
+   */
   async confirmServicesPayment(res: Reservation): Promise<Reservation> {
     const response = await fetch(`${this.baseUrl}/Reservation/confirmPayment`, {
       method: "PUT",
@@ -55,10 +79,13 @@ class ReservationService {
     return await response.json()
   }
 
-  // Создание нового бронирования
+  /**
+   * Создает бронирование
+   * @param res Создаваемое бронирование (вместе со списком дополнительных услуг)
+   * @returns Созданный объект бронирования
+   * @throws Ошибка, если не удалось создать бронирование
+   */
   async createReservation(res: ReservationToCreate): Promise<Reservation> {
-    console.log("Отправляемое тело:", JSON.stringify(res, null, 2))
-
     const response = await fetch(`${this.baseUrl}/Reservation`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -76,7 +103,12 @@ class ReservationService {
     return JSON.parse(responseText)
   }
 
-  // Редактирование бронирования
+  /**
+   * Обновляет бронирование
+   * @param res Бронирование с обновленными данными
+   * @returns Обновленный объект бронирования
+   * @throws Ошибка, если не удалось обновить бронирование
+   */
   async updateReservation(res: Reservation): Promise<Reservation> {
     const response = await fetch(`${this.baseUrl}/Reservation/${res.id}`, {
       method: "PUT",
@@ -93,7 +125,11 @@ class ReservationService {
     return await response.json()
   }
 
-  // Удаление бронирования
+  /**
+   * Удаляет бронирование по идентификатору
+   * @param id Идентификатор удаляемого бронирования
+   * @throws Ошибка, если не удалось удалить бронирование
+   */
   async deleteReservation(id: number): Promise<void> {
     const response = await fetch(`${this.baseUrl}/Reservation/${id}`, {
       method: "DELETE",
@@ -106,7 +142,15 @@ class ReservationService {
     }
   }
 
-  //Расчет промежуточной цены
+  /**
+   * Рассчитывает стоимость бронирования с учетом выбранных услуг
+   * @param arrivalDate Дата заезда
+   * @param departureDate Дата выезда
+   * @param roomTypeID Идентификатор типа комнаты
+   * @param services Массив выбранных дополнительных услуг
+   * @returns Промежуточную стоимость бронирования
+   * @throws Ошибка, если не удалось рассчитать стоимость
+   */
   async calculatePrice(
     arrivalDate: string,
     departureDate: string,

@@ -1,5 +1,8 @@
 import { RoomType } from "../models/roomType"
 
+/**
+  * Сервис для управления типами комнат.
+  */
 class RoomTypeService {
   private baseUrl: string
 
@@ -7,14 +10,23 @@ class RoomTypeService {
     this.baseUrl = baseUrl
   }
 
-  // Получение списка всех типов комнат
+  /**
+   * Получает список всех типов комнат.
+   * @returns Список типов комнат.
+   * @throws Ошибка, если не удалось загрузить данные.
+   */
   async getRoomTypes(): Promise<RoomType[]> {
     const response = await fetch(`${this.baseUrl}/RoomType`)
     if (!response.ok) throw new Error("Failed to fetch room types")
     return await response.json()
   }
 
-  // Создание нового типа комнаты
+  /**
+   * Создает новый тип комнаты.
+   * @param roomType Данные нового типа комнаты (без ID и связанных комнат).
+   * @returns Созданный тип комнаты.
+   * @throws Ошибка, если не удалось создать тип.
+   */
   async createRoomType(roomType: Omit<RoomType, "id" | "rooms">): Promise<RoomType> {
     
     const response = await fetch(`${this.baseUrl}/RoomType`, {
@@ -34,7 +46,12 @@ class RoomTypeService {
     return JSON.parse(responseText)
   }
 
-  // Редактирование типа комнаты
+  /**
+   * Обновляет тип комнаты.
+   * @param roomType Обновленные данные типа комнаты.
+   * @returns Обновленный тип комнаты.
+   * @throws Ошибка, если не удалось обновить данные.
+   */
   async updateRoomType(roomType: RoomType): Promise<RoomType> {
     const response = await fetch(`${this.baseUrl}/RoomType/${roomType.id}`, {
       method: "PUT",
@@ -51,7 +68,11 @@ class RoomTypeService {
     return await response.json()
   }
 
-  // Удаление типа комнаты
+  /**
+   * Удаляет тип комнаты по идентификатору.
+   * @param id Идентификатор типа комнаты.
+   * @throws Ошибка, если не удалось удалить тип.
+   */
   async deleteRoomType(id: number): Promise<void> {
     const response = await fetch(`${this.baseUrl}/RoomType/${id}`, {
       method: "DELETE",

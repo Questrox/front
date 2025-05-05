@@ -1,6 +1,8 @@
 import { AdditionalService } from "../models/additionalService"
 
-
+/**
+ * Сервис для взаимодействия с дополнительными услугами через API.
+ */
 class AdditionalServiceService {
   private baseUrl: string
 
@@ -8,14 +10,23 @@ class AdditionalServiceService {
     this.baseUrl = baseUrl
   }
 
-  // Получение списка всех дополнительных услуг
+  /**
+   * Получает список всех дополнительных услуг.
+   * @returns Промис с массивом дополнительных услуг.
+   * @throws Ошибка, если запрос не удался.
+   */
   async getServices(): Promise<AdditionalService[]> {
     const response = await fetch(`${this.baseUrl}/AdditionalService`)
     if (!response.ok) throw new Error("Failed to fetch additional services")
     return await response.json()
   }
 
-  // Создание новой дополнительной услуги
+  /**
+   * Создает новую дополнительную услугу.
+   * @param service Объект услуги без поля `id`.
+   * @returns Промис с созданной услугой (включая присвоенный id).
+   * @throws Ошибка, если запрос не удался.
+   */
   async createService(service: Omit<AdditionalService, "id">): Promise<AdditionalService> {
     const response = await fetch(`${this.baseUrl}/AdditionalService`, {
       method: "POST",
@@ -33,7 +44,12 @@ class AdditionalServiceService {
     return JSON.parse(responseText)
   }
 
-  // Обновление дополнительной услуги
+  /**
+   * Обновляет существующую дополнительную услугу.
+   * @param service Обновленная услуга.
+   * @returns Промис с обновленным объектом услуги.
+   * @throws Ошибка, если запрос не удался.
+   */
   async updateService(service: AdditionalService): Promise<AdditionalService> {
     const response = await fetch(`${this.baseUrl}/AdditionalService/${service.id}`, {
       method: "PUT",
@@ -50,7 +66,12 @@ class AdditionalServiceService {
     return await response.json()
   }
 
-  // Удаление услуги
+  /**
+   * Удаляет дополнительную услугу по идентификатору.
+   * @param id Идентификатор услуги для удаления.
+   * @returns Промис без значения при успешном удалении.
+   * @throws Ошибка, если запрос не удался.
+   */
   async deleteService(id: number): Promise<void> {
     const response = await fetch(`${this.baseUrl}/AdditionalService/${id}`, {
       method: "DELETE",

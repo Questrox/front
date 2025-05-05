@@ -24,11 +24,8 @@ import {
   import CancelIcon from "@mui/icons-material/Cancel";
   
   function formatDate(dateString: string): string {
-    const date = new Date(dateString)
-    const day = (`0${date.getDate()}`).slice(-2)
-    const month = (`0${date.getMonth() + 1}`).slice(-2)
-    const year = date.getFullYear()
-    return `${day}.${month}.${year}`
+    const date = new Date(dateString);
+    return date.toLocaleDateString("ru-RU");
   }
   const getStatusColor = (statusId: number): 'default' | 'success' | 'error' | 'warning' => {
     switch (statusId) {

@@ -1,5 +1,8 @@
 import { Room } from "../models/room"
 
+/**
+ * Сервис для управления комнатами.
+ */
 class RoomService {
   private baseUrl: string
 
@@ -7,14 +10,23 @@ class RoomService {
     this.baseUrl = baseUrl
   }
 
-  // Получение списка всех комнат
+   /**
+   * Получает список всех комнат.
+   * @returns Список комнат.
+   * @throws Ошибка, если не удалось загрузить данные.
+   */
   async getRooms(): Promise<Room[]> {
     const response = await fetch(`${this.baseUrl}/Room`)
     if (!response.ok) throw new Error("Failed to fetch rooms")
     return await response.json()
   }
 
-  // Создание новой комнаты
+  /**
+   * Создает новую комнату.
+   * @param room Объект комнаты без идентификатора.
+   * @returns Созданная комната.
+   * @throws Ошибка, если не удалось создать комнату.
+   */
   async createRoom(room: Omit<Room, "id">): Promise<Room> {
     
     const response = await fetch(`${this.baseUrl}/Room`, {
@@ -34,7 +46,12 @@ class RoomService {
     return JSON.parse(responseText)
   }
 
-  // Редактирование комнаты
+  /**
+   * Обновляет данные комнаты.
+   * @param room Обновленная информация о комнате.
+   * @returns Обновленная комната.
+   * @throws Ошибка, если не удалось обновить комнату.
+   */
   async updateRoom(room: Room): Promise<Room> {
     const response = await fetch(`${this.baseUrl}/Room/${room.id}`, {
       method: "PUT",
@@ -51,7 +68,11 @@ class RoomService {
     return await response.json()
   }
 
-  // Удаление комнаты
+  /**
+   * Удаляет комнату по идентификатору.
+   * @param id Идентификатор комнаты.
+   * @throws Ошибка, если не удалось удалить комнату.
+   */
   async deleteRoom(id: number): Promise<void> {
     const response = await fetch(`${this.baseUrl}/Room/${id}`, {
       method: "DELETE",
@@ -64,7 +85,14 @@ class RoomService {
     }
   }
 
-// Получение списка доступных комнат
+/**
+   * Получает список доступных комнат по заданным параметрам.
+   * @param arrivalDate Дата заезда.
+   * @param departureDate Дата выезда.
+   * @param roomTypeID Идентификатор типа комнаты.
+   * @returns Список свободных комнат данного типа в данный период.
+   * @throws Ошибка, если не удалось получить список.
+   */
 async getAvailableRooms(arrivalDate: string, departureDate: string, roomTypeID: number): Promise<Room[]> {
   const url = `${this.baseUrl}/Room/available`
     + `?arrivalDate=${encodeURIComponent(arrivalDate)}`

@@ -21,11 +21,8 @@ import { UserProfileContext } from "../../context/UserProfileContext"
 import { Reservation } from "../../models/reservation"
 
 function formatDate(dateString: string): string {
-  const date = new Date(dateString)
-  const day = (`0${date.getDate()}`).slice(-2)
-  const month = (`0${date.getMonth() + 1}`).slice(-2)
-  const year = date.getFullYear()
-  return `${day}.${month}.${year}`
+  const date = new Date(dateString);
+  return date.toLocaleDateString("ru-RU");
 }
 
 const UserProfile: React.FC = () => {

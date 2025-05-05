@@ -1,5 +1,8 @@
 import { LoginRequest, LoginResponse, ApiError, RegisterRequest } from "../models/auth.models"
 
+/**
+ * Сервис для аутентификации пользователей (вход, регистрация, работа с токеном).
+ */
 class AuthService {
   private baseUrl: string
   // `baseUrl` — базовый URL API, передается при создании экземпляра класса.
@@ -12,8 +15,13 @@ class AuthService {
     // Конструктор принимает базовый URL для API.
   }
 
+  /**
+   * Выполняет вход пользователя.
+   * @param credentials Учетные данные пользователя.
+   * @returns Ответ с токеном и данными пользователя.
+   * @throws Ошибка, если вход не удался.
+   */
   async login(credentials: LoginRequest): Promise<LoginResponse> {
-    // Асинхронный метод для выполнения запроса входа (логина).
 
     const response = await fetch(`${this.baseUrl}/api/Account/login`, {
       method: "POST",
@@ -36,6 +44,11 @@ class AuthService {
     // Если запрос успешен, возвращаем данные пользователя, приведённые к типу `LoginResponse`.
   }
 
+  /**
+   * Регистрирует нового пользователя.
+   * @param data Данные для регистрации.
+   * @throws Ошибка, если регистрация не удалась.
+   */
   async register(data: RegisterRequest): Promise<void> {
     const response = await fetch(`${this.baseUrl}/api/Account/register`, {
       method: "POST",
@@ -51,26 +64,35 @@ class AuthService {
     }
   }
   
-
+  /**
+   * Сохраняет JWT токен в localStorage.
+   * @param token JWT токен.
+   */
   storeToken(token: string): void {
-    // Метод для сохранения токена в `localStorage`.
     localStorage.setItem(this.tokenKey, token)
   }
 
+  /**
+   * Получает JWT токен из localStorage.
+   * @returns JWT токен или null, если он отсутствует.
+   */
   getToken(): string | null {
-    // Метод для получения токена из `localStorage`.
     return localStorage.getItem(this.tokenKey)
   }
-
+ 
+  /**
+   * Удаляет JWT токен из localStorage.
+   */
   removeToken(): void {
-    // Метод для удаления токена из `localStorage`.
     localStorage.removeItem(this.tokenKey)
   }
 
+   /**
+   * Проверяет, авторизован ли пользователь.
+   * @returns `true`, если токен присутствует, иначе `false`.
+   */
   isAuthenticated(): boolean {
-    // Метод для проверки аутентификации пользователя.
     return !!this.getToken()
-    // Если токен существует, возвращаем `true`, иначе — `false`.
   }
 }
 
