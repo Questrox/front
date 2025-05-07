@@ -43,7 +43,7 @@ const UserProfile: React.FC = () => {
   }
 
   return (
-    <Box maxWidth={900} mx="auto" mt={5} px={2}>
+    <Box maxWidth="95%" mx="auto" mt={5} px={2}>
   <Typography variant="h4" component="h1" gutterBottom textAlign="center">
     Личный кабинет
   </Typography>

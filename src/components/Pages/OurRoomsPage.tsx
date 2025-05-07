@@ -55,7 +55,7 @@ const OurRoomsPage: React.FC = () => {
   return (
     <Box
       sx={{
-        maxWidth: 900,
+        maxWidth: "60%",
         mx: "auto",
         mt: 6,
         mb: 8,
@@ -133,19 +133,19 @@ const OurRoomsPage: React.FC = () => {
           <Swiper
             navigation
             modules={[Navigation]}
-            style={{ height: 420, borderRadius: "16px 16px 0 0" }}
+            style={{borderRadius: "16px 16px 0 0", aspectRatio: '16/9' }}
           >
             {images.map((img) => (
               <SwiperSlide key={img.id}>
                 <CardMedia
                   component="img"
-                  height="420"
                   src={img.imagePath}
                   alt="Фото номера"
                   sx={{
                     objectFit: "cover",
                     width: "100%",
                     borderRadius: "16px 16px 0 0",
+                    userSelect: "none"
                   }}
                 />
               </SwiperSlide>

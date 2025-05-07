@@ -1,3 +1,4 @@
+import { PagedResult } from "../models/pagedResult"
 import { Room } from "../models/room"
 
 /**
@@ -18,6 +19,18 @@ class RoomService {
   async getRooms(): Promise<Room[]> {
     const response = await fetch(`${this.baseUrl}/Room`)
     if (!response.ok) throw new Error("Failed to fetch rooms")
+    return await response.json()
+  }
+
+  /**
+   * Получает список комнат с учетом пагинации
+   * @param page Номер страницы
+   * @param pageSize Количество комнат на страницу
+   * @returns Список комнат для этой страницы + общее число комнат
+   */
+  async getPaginatedRooms(page: number, pageSize: number): Promise<PagedResult<Room>> {
+    const response = await fetch(`${this.baseUrl}/Room/pagination?page=${encodeURIComponent(page)}&pageSize=${encodeURIComponent(pageSize)}`)
+    if (!response.ok) throw new Error("Failed to fetch paginated rooms")
     return await response.json()
   }
 

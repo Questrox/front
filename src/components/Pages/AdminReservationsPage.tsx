@@ -51,72 +51,78 @@ const AdminReservationsPage: React.FC = () => {
   };
 
   return (
-    <Box maxWidth="md" mx="auto" mt={4}>
-      <Paper elevation={3} sx={{ p: 4, borderRadius: 3 }}>
-        <Typography variant="h5" gutterBottom align="center">
-          Поиск бронирований по паспорту
-        </Typography>
+    <Box maxWidth="95%" mx="auto" mt={4}>
+  {/* Блок поиска */}
+  <Box maxWidth={500} mx="auto" mb={4}>
+      <Typography variant="h5" gutterBottom align="center">
+        Поиск бронирований по паспорту
+      </Typography>
 
-        <Stack direction={{ xs: "column", sm: "row" }} spacing={2} sx={{ mt: 2, mb: 4 }}>
-          <TextField
-            fullWidth
-            label="Паспорт"
-            value={passport}
-            onChange={(e) => setPassport(e.target.value)}
-          />
-          <Button
-            fullWidth
-            variant="contained"
-            onClick={handleSearch}
-            disabled={!passport.trim()}
+      <Stack direction={{ xs: "column", sm: "row" }} spacing={2} sx={{ mt: 2 }}>
+        <TextField
+          fullWidth
+          label="Паспорт"
+          value={passport}
+          onChange={(e) => setPassport(e.target.value)}
+          InputProps={{ sx: { background: "#fffafa", } }}
+        />
+        <Button
+          variant="contained"
+          onClick={handleSearch}
+          disabled={!passport.trim()}
+          sx={{ whiteSpace: "nowrap", px: 3 }}
+        >
+          Найти
+        </Button>
+      </Stack>
+  </Box>
+
+  {/* Блок с результатами */}
+  <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
+    {reservations.length > 0 ? (
+      <Stack spacing={3}>
+        {reservations.map((res) => (
+          <Paper
+            key={res.id}
+            variant="outlined"
+            sx={{ p: 3, borderRadius: 2 }}
           >
-            Найти
-          </Button>
-        </Stack>
-
-        {reservations.length > 0 ? (
-          <Stack spacing={3}>
-            {reservations.map((res) => (
-              <Paper
-                key={res.id}
+            <Stack spacing={1}>
+              <Typography><strong>Номер:</strong> {res.room.number}</Typography>
+              <Typography>
+                <strong>Тип номера:</strong>{" "}
+                {`${res.room.roomType.guestCapacity}-местный ${res.room.roomType.roomCategory.category}`}
+              </Typography>
+              <Typography>
+                <strong>Даты:</strong> {formatDate(res.arrivalDate)} – {formatDate(res.departureDate)}
+              </Typography>
+              <Typography component="div">
+                <strong>Статус:</strong>{" "}
+                {getStatusChip(res.reservationStatusID, res.reservationStatus.status)}
+              </Typography>
+              <Typography><strong>Проживание:</strong> {res.livingPrice}₽</Typography>
+              <Typography><strong>Доп. услуги:</strong> {res.servicesPrice}₽</Typography>
+              <Typography><strong>Итого:</strong> {res.fullPrice}₽</Typography>
+            </Stack>
+            <Box display="flex" justifyContent="flex-end" mt={2}>
+              <Button
                 variant="outlined"
-                sx={{ p: 3, borderRadius: 2 }}
+                onClick={() => navigate(`/adminReservations/${res.id}`)}
               >
-                <Stack spacing={1}>
-                  <Typography><strong>Номер:</strong> {res.room.number}</Typography>
-                  <Typography>
-                    <strong>Тип номера:</strong>{" "}
-                    {`${res.room.roomType.guestCapacity}-местный ${res.room.roomType.roomCategory.category}`}
-                  </Typography>
-                  <Typography>
-                    <strong>Даты:</strong> {formatDate(res.arrivalDate)} – {formatDate(res.departureDate)}
-                  </Typography>
-                  <Typography component="div">
-                    <strong>Статус:</strong>{" "}
-                    {getStatusChip(res.reservationStatusID, res.reservationStatus.status)}
-                  </Typography>
-                  <Typography><strong>Проживание:</strong> {res.livingPrice}₽</Typography>
-                  <Typography><strong>Доп. услуги:</strong> {res.servicesPrice}₽</Typography>
-                  <Typography><strong>Итого:</strong> {res.fullPrice}₽</Typography>
-                </Stack>
-                <Box display="flex" justifyContent="flex-end" mt={2}>
-                  <Button
-                    variant="outlined"
-                    onClick={() => navigate(`/adminReservations/${res.id}`)}
-                  >
-                    Подробнее
-                  </Button>
-                </Box>
-              </Paper>
-            ))}
-          </Stack>
-        ) : (
-          <Typography variant="body1" color="text.secondary">
-            Бронирования не найдены.
-          </Typography>
-        )}
-      </Paper>
-    </Box>
+                Подробнее
+              </Button>
+            </Box>
+          </Paper>
+        ))}
+      </Stack>
+    ) : (
+      <Typography variant="body1" color="text.secondary" align="center">
+        Бронирования не найдены.
+      </Typography>
+    )}
+  </Paper>
+</Box>
+
   );
 };
 

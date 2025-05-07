@@ -9,10 +9,12 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Hotel, EmojiPeople, LocationOn } from "@mui/icons-material";
+import { useAuth } from "../../context/AuthContext";
 
 const Home = () => {
   const theme = useTheme();
   const navigate = useNavigate();
+  const {user, isAdmin} = useAuth();
 
   return (
     <Box sx={{ px: { xs: 2, sm: 4, md: 8 } }}>
@@ -66,7 +68,11 @@ const Home = () => {
               spacing={2}
             >
               <Button
-                onClick={() => navigate("/userProfile")}
+                onClick={() => {
+                  if (!user)
+                    alert("Необходимо выполнить вход!");
+                  else
+                    navigate("/userProfile")}}
                 variant="contained"
                 size="large"
               >
