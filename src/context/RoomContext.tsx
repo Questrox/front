@@ -70,6 +70,7 @@ export const RoomProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       await fetchRooms(currentPage);
     } catch (error) {
       console.error("Ошибка при удалении комнаты:", error);
+      alert("Ошибка при удалении комнаты: " + error)
     }
   };
 

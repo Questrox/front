@@ -2,7 +2,6 @@ import React from "react"
 import { Routes, Route, Navigate } from "react-router-dom"
 import Layout from "./components/Layout/Layout"
 import Home from "./components/Pages/Home"
-import Page1 from "./components/Pages/OurRoomsPage"
 import AdminPanel from "./components/Pages/AdminPanel"
 import { AuthProvider } from "./context/AuthContext"
 import { useAuth } from "./context/AuthContext"
@@ -40,6 +39,7 @@ import AdminReservationDetailsPage from "./components/Pages/AdminReservationDeta
 import ReservationPage from "./components/Pages/ReservationPage"
 import OurRoomsPage from "./components/Pages/OurRoomsPage"
 import { OurRoomsProvider } from "./context/OurRoomsContext"
+import ErrorBoundary from "./components/Layout/ErrorBoundary"
 
 dayjs.locale("ru");
 
@@ -77,6 +77,7 @@ const App: React.FC = () => {
   // Главный компонент приложения, который объединяет маршруты, Layout и провайдер авторизации.
 
   return (
+    <ErrorBoundary>
     <AuthProvider>
       <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ru">
       {/* Обеспечиваем доступ к контексту авторизации для всех компонентов приложения. */}
@@ -84,26 +85,24 @@ const App: React.FC = () => {
         {/* Оборачиваем приложение в Layout, который может содержать шапку, подвал и т.д. */}
         <Routes>
           {/* Определяем маршруты приложения. */}
-          <Route path="/" element={<Home />} />
-          {/* Маршрут главной страницы. */}
-          <Route path="/login" element={<LoginPage />} />
-          {/* Маршрут страницы входа. */}
-          <Route path="/register" element={<RegisterPage />} />
-          {/* Маршрут страницы регистрации. */}
-          <Route
-          path="/ourRooms"
-          element={
+          <Route path="/" element={<ErrorBoundary><Home /></ErrorBoundary>} />
+          <Route path="/login" element={<ErrorBoundary><LoginPage /></ErrorBoundary>} />
+          <Route path="/register" element={<ErrorBoundary><RegisterPage /></ErrorBoundary>} />
+          <Route path="/ourRooms" element={
             <OurRoomsProvider>
-              <OurRoomsPage />
+              <ErrorBoundary>
+                <OurRoomsPage />
+              </ErrorBoundary>
             </OurRoomsProvider>
-          }
-        />
+          } />
           <Route
             path="/adminPanel"
             element={
               <ProtectedRoute adminOnly>
                 {/* Ограниченный маршрут для панели администратора только для администраторов. */}
+                <ErrorBoundary>
                 <AdminPanel />
+                </ErrorBoundary>
               </ProtectedRoute>
             }
           />
@@ -113,11 +112,13 @@ const App: React.FC = () => {
               <ProtectedRoute>
                 <CreateReservationProvider>
                 <UserProfileProvider>
+                  <ErrorBoundary>
                   <Routes>
                     <Route path="" element={<UserProfile />} />
                     <Route path="booking" element={<ReservationPage />} />
                     <Route path=":id" element={<ReservationDetailsPage />} />
                   </Routes>
+                  </ErrorBoundary>
                 </UserProfileProvider>
                 </CreateReservationProvider>
               </ProtectedRoute>
@@ -128,11 +129,13 @@ const App: React.FC = () => {
             element={
               <ProtectedRoute adminOnly>
                 <UserProvider>
+                <ErrorBoundary>
                   <Routes>
                     <Route path="" element={<UserList />} />
                     <Route path="add" element={<UserForm />} />
                     <Route path=":id" element={<UserDetails />} />
                   </Routes>
+                  </ErrorBoundary>
                 </UserProvider>
               </ProtectedRoute>
             }
@@ -142,11 +145,13 @@ const App: React.FC = () => {
             element={
               <ProtectedRoute adminOnly>
                 <RoomTypeProvider>
+                <ErrorBoundary>
                   <Routes>
                     <Route path="" element={<RoomTypeList />} />
                     <Route path="add" element={<RoomTypeForm />} />
                     <Route path=":id" element={<RoomTypeDetails />} />
                   </Routes>
+                  </ErrorBoundary>
                 </RoomTypeProvider>
               </ProtectedRoute>
             }
@@ -156,11 +161,13 @@ const App: React.FC = () => {
             element={
               <ProtectedRoute adminOnly>
                 <RoomProvider>
+                <ErrorBoundary>
                   <Routes>
                     <Route path="" element={<RoomList />} />
                     <Route path="add" element={<RoomForm />} />
                     <Route path=":id" element={<RoomDetails />} />
                   </Routes>
+                  </ErrorBoundary>
                 </RoomProvider>
               </ProtectedRoute>
             }
@@ -170,11 +177,13 @@ const App: React.FC = () => {
             element={
               <ProtectedRoute adminOnly>
                 <AdditionalServiceProvider>
+                <ErrorBoundary>
                   <Routes>
                     <Route path="" element={<AdditionalServiceList />} />
                     <Route path="add" element={<AdditionalServiceForm />} />
                     <Route path=":id" element={<AdditionalServiceDetails />} />
                   </Routes>
+                  </ErrorBoundary>
                 </AdditionalServiceProvider>
               </ProtectedRoute>
             }
@@ -184,10 +193,12 @@ const App: React.FC = () => {
             element={
               <ProtectedRoute adminOnly>
                 <AdminReservationProvider>
+                <ErrorBoundary>
                   <Routes>
                     <Route path="" element={<AdminReservationsPage />} />
                     <Route path=":id" element={<AdminReservationDetailsPage />} />
                   </Routes>
+                  </ErrorBoundary>
                 </AdminReservationProvider>
               </ProtectedRoute>
             }
@@ -196,6 +207,7 @@ const App: React.FC = () => {
       </Layout>
       </LocalizationProvider>
     </AuthProvider>
+    </ErrorBoundary>
   )
 }
 

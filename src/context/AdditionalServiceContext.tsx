@@ -42,6 +42,7 @@ export const AdditionalServiceProvider: React.FC<{ children: ReactNode }> = ({ c
       setServices(prev => prev.map(service => service.id === newService.id ? newService : service))
     } catch (error) {
       console.error("Ошибка при обновлении услуги:", error)
+      alert("Ошибка при обновлении услуги: " + error)
     }
   }
 

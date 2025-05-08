@@ -64,6 +64,7 @@ export const RoomTypeProvider: React.FC<{ children: ReactNode }> = ({ children }
       setRoomTypes((prev) => prev.filter((rt) => rt.id !== id))
     } catch (error) {
       console.error("Ошибка при удалении типа комнаты:", error)
+      alert("Ошибка при удалении типа комнаты: " + error)
     }
   }
   const getRoomCategories = async (): Promise<RoomCategory[]> => {

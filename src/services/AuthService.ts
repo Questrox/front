@@ -47,7 +47,7 @@ class AuthService {
   /**
    * Регистрирует нового пользователя.
    * @param data Данные для регистрации.
-   * @throws Ошибка, если регистрация не удалась.
+   * @throws Ошибки, если регистрация не удалась.
    */
   async register(data: RegisterRequest): Promise<void> {
     const response = await fetch(`${this.baseUrl}/api/Account/register`, {
@@ -59,10 +59,27 @@ class AuthService {
     })
   
     if (!response.ok) {
-      const errorData: ApiError = await response.json().catch(() => ({}))
-      throw new Error(errorData.message || "Registration failed")
+      const errorData = await response.json().catch(() => ({}));
+      const message = errorData
+        .map((err: any) => err.description || err.message || JSON.stringify(err))
+        .join('\n');
+      throw new Error(message || "Registration failed");
     }
   }
+
+  /**
+   * Выполняет выход пользователя
+   */
+  async logout(): Promise<void> {
+    console.log("Выполняем выход");
+    await fetch(`${this.baseUrl}/api/Account/logout`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${this.getToken()}`,
+      },
+    }).catch(() => {})
+  }
+  
   
   /**
    * Сохраняет JWT токен в localStorage.

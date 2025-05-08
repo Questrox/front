@@ -60,7 +60,7 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onClose }) => {
              InputProps={{ sx: { background: "#fffafa", },}}/>
             <TextField label="Пароль" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required fullWidth
             InputProps={{ sx: { background: "#fffafa", },}} />
-            {error && <Typography color="error">{error}</Typography>}
+            {error && <Typography color="error" sx={{ whiteSpace: 'pre-line' }}>{error}</Typography>}
             <Button
               type="submit"
               variant="contained"

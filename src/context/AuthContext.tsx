@@ -64,8 +64,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }
 
-  const logout = () => {
-    // Функция для выхода из системы.
+  const logout = async () => {
+
+    await authService.logout();
     authService.removeToken()
     // Удаляем токен из хранилища.
 
