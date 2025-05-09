@@ -64,7 +64,7 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onClose }) => {
             <Button
               type="submit"
               variant="contained"
-              disabled={isLoading}
+              disabled={isLoading || fullName.length === 0 || passport.length === 0 || userName.length === 0 || password.length === 0}
               endIcon={isLoading ? <CircularProgress size={20} /> : null}
               fullWidth
             >

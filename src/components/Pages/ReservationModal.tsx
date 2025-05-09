@@ -14,7 +14,6 @@ import {
   AccordionDetails,
   Card,
   Paper,
-  Dialog,
   Modal,
 } from "@mui/material"
 import { DatePicker } from "@mui/x-date-pickers/DatePicker"
@@ -60,22 +59,24 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
       !context ||
       !selectedRoomType ||
       !checkInDate ||
-      !checkOutDate
+      !checkOutDate 
     ) {
       setAvailableRooms([])
       return
     }
-    context
-      .getAvailableRooms(
-        checkInDate.format("YYYY-MM-DD"),
-        checkOutDate.format("YYYY-MM-DD"),
-        selectedRoomType.id
-      )
-      .then((rooms) => {
-        setAvailableRooms(rooms)
-        setSelectedRoom(null)
-      })
-      .catch(console.error)
+    const result = context.getAvailableRooms(
+  checkInDate.format("YYYY-MM-DD"),
+  checkOutDate.format("YYYY-MM-DD"),
+  selectedRoomType.id
+)
+console.log('Результат вызова getAvailableRooms:', result)
+if (!result || typeof result.then !== 'function') {
+  console.error('getAvailableRooms НЕ вернул промис!', result)
+}
+result.then((rooms) => {
+  setAvailableRooms(rooms)
+  setSelectedRoom(null)
+})
   }, [context, selectedRoomType, checkInDate, checkOutDate])
 
   
@@ -212,6 +213,7 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
               
             />
             <Autocomplete
+            disablePortal
               options={context.roomTypes}
               getOptionLabel={(o) =>
                 `${o.guestCapacity}-местный ${o.roomCategory.category}`
@@ -222,6 +224,7 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
               sx={{ width: "100%", background: "#fffafa" }}
             />
             <Autocomplete
+            disablePortal
               options={availableRooms}
               getOptionLabel={(o) => String(o.number)}
               value={selectedRoom}
@@ -341,6 +344,7 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
           color="primary"
           fullWidth
           size="large"
+          disabled={selectedRoom == null || selectedRoomType == null || checkInDate == null || checkOutDate == null}
           sx={{
             mt: 2,
             py: 1.3,

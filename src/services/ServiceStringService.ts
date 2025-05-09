@@ -28,7 +28,7 @@ class ServiceStringService {
     if (!response.ok) {
       const errorData = await response.json();
       console.error(`Ошибка оказания услуги: ${response.status} - ${JSON.stringify(errorData)}`);
-      throw new Error(`Failed to deliver service: ${errorData.message || 'Unknown error'}`);
+      throw new Error(`${errorData.message || 'Unknown error'}`);
     }
   
     return await response.json();

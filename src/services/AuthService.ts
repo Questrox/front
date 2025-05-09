@@ -71,7 +71,6 @@ class AuthService {
    * Выполняет выход пользователя
    */
   async logout(): Promise<void> {
-    console.log("Выполняем выход");
     await fetch(`${this.baseUrl}/api/Account/logout`, {
       method: "POST",
       headers: {

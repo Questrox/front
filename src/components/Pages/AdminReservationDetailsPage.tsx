@@ -1,15 +1,13 @@
 // AdminReservationDetailsPage.tsx
 import { useContext, useEffect, useState } from "react";
 import {
-  Box, Typography, Chip, List, ListItem,
-  ListItemText, TextField, Button, Container, Stack,
+  Box, Typography, Chip,
+  TextField, Button, Container, Stack,
   Paper, Divider
 } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { Reservation } from "../../models/reservation";
 import { AdminReservationContext } from "../../context/AdminReservationsContext";
-import ReservationService from "../../services/ReservationService";
-import { CheckCircle, HourglassEmpty, Info } from "@mui/icons-material";
 import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 import InfoIcon from "@mui/icons-material/Info";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
@@ -64,7 +62,11 @@ const AdminReservationDetailsPage: React.FC = () => {
   const handleDeliverService = async (serviceStringID: number) => { //Подтверждение оказания услуги
     if (!context || !reservation) return;
     const amount = amounts[serviceStringID] ?? 1;
-    if (amount == 0) return;
+    if (amount <= 0)
+    {
+      alert("Невозможно оказать такое количество услуг. Введите корректное количество");
+      return;
+    }
     try 
     {
       const updatedService = await context.deliverService(serviceStringID, amount);
