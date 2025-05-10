@@ -74,7 +74,7 @@ const AdminReservationDetailsPage: React.FC = () => {
       setAmounts(prev => ({ ...prev, [serviceStringID]: 1 })); //Обновление только для этой услуги
       alert("Оказание услуги подтверждено!");
     } catch (error){
-      alert(`Ошибка при оказании услуги: ${error}`);
+      alert(`${error}`);
     }
   };
 

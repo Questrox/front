@@ -15,7 +15,7 @@ const Home = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const {user, isAdmin} = useAuth();
-
+  
   return (
     <Box sx={{ px: { xs: 2, sm: 4, md: 8 } }}>
       {/* Hero section */}

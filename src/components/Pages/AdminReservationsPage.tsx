@@ -24,7 +24,7 @@ function formatDate(dateString: string): string {
 }
 
 const AdminReservationsPage: React.FC = () => {
-  const [passport, setPassport] = useState("1234567890");
+  const [passport, setPassport] = useState("");
   const { reservations, getReservationsByPassport } = useContext(AdminReservationContext)!;
   const navigate = useNavigate();
 

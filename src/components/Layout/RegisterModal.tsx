@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { Modal, Box, Typography, TextField, Button, Stack, CircularProgress } from "@mui/material"
 import { authService } from "../../services/AuthService"
 import { useNavigate } from "react-router-dom"
+import { useAuth } from "../../context/AuthContext"
 
 const modalStyle = {
   position: "absolute",
@@ -28,6 +29,7 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onClose }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
   const navigate = useNavigate()
+  const {login} = useAuth()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -36,8 +38,8 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ open, onClose }) => {
 
     try {
       await authService.register({ fullName, passport, userName, password })
+      await login(userName, password)
       onClose()
-      navigate("/login")
     } catch (err: any) {
       setError(err.message || "Ошибка регистрации")
     } finally {
